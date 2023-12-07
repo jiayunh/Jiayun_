@@ -1,0 +1,79 @@
+Date,Type,Color,Length,Number,Production_number,Steps,Abnormal,Mistake_rates,People,Total_time,Time_per_person
+11/14/2023,SFTP CAT6A,,,,2200,plug registered jack,,,19,,11
+11/14/2023,FTP CAT6,,,,3000,product,,,19,,11
+11/17/2023,SFTP CAT6A,,,,2500,packing,,,23,,
+11/17/2023,SFTP CAT6A,,,,3000,preprocess,,,23,,
+11/17/2023,SFTP CAT6A,,,,3600,molding,,,23,,
+11/18/2023,SFTP CAT6A,,,,3600,preprocess,,,22,,
+11/18/2023,SFTP CAT6A,,,,3000,packing,,,22,,
+11/19/2023,SFTP CAT6A,,,,3200,plug registered jack,,,23,,
+11/19/2023,SFTP CAT6A,,,,1200,packing,,,23,,
+11/19/2023,SFTP CAT6A,,,,1500,molding,,,23,,
+11/20/2023,SFTP CAT6A,green,2M,2100,2100,prepackage,Yes,0.028,22,150,6.82
+11/20/2023,SFTP CAT6A,green,1M,2000,1000,to be tied,No,0.01,22,70,3.18
+11/21/2023,SFTP CAT6A,green,1M,2000,1000,prepackage,No,0.008,22,222.5,10.11
+11/21/2023,SFTP CAT6A,green,0.5M,2000,2000,prepackage,No,0.007,22,222.5,10.11
+11/21/2023,SFTP CAT6A,green,0.3M,2250,2250,premolding,No,0.001,22,222.5,10.11
+11/21/2023,SFTP CAT6A,green,5M,560,560,package_already,No,0,22,222.5,10.11
+11/21/2023,SFTP CAT6A,green,3M,1000,1000,package_already,No,0,22,222.5,10.11
+11/22/2023,SFTP CAT6A,green,0.3M,2250,2250,prepackage,No,0.006,20,210,10.5
+11/22/2023,SFTP CAT6A,grey,5M,1050,1050,to be tied,No,0.013,20,210,10.5
+11/22/2023,SFTP CAT6A,grey,3M,2500,500,molding unfinished,No,0.001,20,210,10.5
+11/22/2023,SFTP CAT6A,green,1M,2000,1900,packing and wait for the report,No,0,20,210,10.5
+11/22/2023,SFTP CAT6A,green,0.5M,2000,1700,packing and wait for the report,No,0,20,210,10.5
+11/23/2023,SFTP CAT6A,grey,3M,2500,2000,to be tied,No,0.01,19,187,9.84
+11/23/2023,SFTP CAT6A,grey,2M,4050,1200,to be tied,No,0.012,19,187,9.84
+11/23/2023,SFTP CAT6A,green,0.5M,2000,1700,wait for the report,No,0,19,187,9.84
+11/24/2023,FTP CAT6,white,5M,4000,3300,to be tied,No,0.016,19,187,9.84
+11/24/2023,FTP CAT6,white,3M,2500,2000,premolding,No,0,19,187,9.84
+11/25/2023,FTP CAT6,white,3M,2500,2000,to be tied,No,0.018,19,135,7.11
+11/25/2023,FTP CAT6,white,2M,125,125,premolding,No,0,19,135,7.11
+11/25/2023,FTP CAT6,white,1M,6300,1300,premolding,No,0,19,135,7.11
+11/26/2023,FTP CAT6,white,3M,2500,500,to be tied,No,0.004,18,128,7.11
+11/26/2023,FTP CAT6,white,2M,125,125,to be tied,No,0.008,18,128,7.11
+11/26/2023,FTP CAT6,white,1M,6300,2000,to be tied,No,0.007,18,128,7.11
+11/26/2023,UTP CAT6,green,5M.3M.2M.1.5M.1M,450,450,premolding,No,0,18,128,7.11
+11/27/2023,UTP CAT6,blue,5M.3M.2M.1.5M.1M,450,450,wire cutting  to package_already,No,0.28,18,176,9.78
+11/27/2023,UTP CAT6,green,5M.3M.2M.1.5M.1M,450,450,wire cutting  to pretest,No,0.3,18,176,9.78
+11/27/2023,UTP CAT6,yellow,5M.3M.2M.1.5M.1M,450,450,wire cutting  to molding already,No,0,18,176,9.78
+11/27/2023,UTP CAT6,red,5M.3M.2M.1.5M.1M,450,450,wire cutting  to to be wired,No,0,18,176,9.78
+11/28/2023,UTP CAT6,yellow,5M.3M.2M.1.5M.1M,450,450,molding to package_already,No,0.31,15,165,11
+11/28/2023,UTP CAT6,red,5M.3M.2M.1.5M.1M,450,450,wiring to package_already,No,0.17,15,165,11
+11/28/2023,UTP CAT6,purple,5M.3M.2M.1.5M.1M,450,450,wire cutting  to pretest,No,0,15,165,11
+11/28/2023,UTP CAT6,grey,5M.3M.2M.1.5M.1M,450,450,wire cutting  to pretest,No,0,15,165,11
+11/28/2023,UTP CAT6,blue,1M,1005,1005,wire cutting only,No,0,1,11,11
+11/28/2023,UTP CAT6,red,2.5M,505,505,wire cutting only,No,0,1,11,11
+11/28/2023,UTP CAT6,black,2.5M,505,505,wire cutting only,No,0,1,11,11
+11/29/2023,UTP CAT6,purple,5M.3M.2M.1.5M.1M,450,450,test to package_already,No,0.28,5,55,11
+11/29/2023,UTP CAT6,grey,5M.3M.2M.1.5M.1M,450,450,test to package_already,No,0.29,5,55,11
+11/29/2023,FTP CAT6,white,5M,4000,4000,wire tied to prepackage,No,0,10,110,11
+11/29/2023,FTP CAT6,white,3M,2500,2500,wire tied to prepackage,No,0,10,110,11
+11/29/2023,FTP CAT6,white,2M,125,125,wire tied to prepackage,No,0,10,110,11
+11/29/2023,FTP CAT6,white,1M,6300,2000,wire tied to prepackage,No,0,10,110,11
+11/30/2023,UTP CAT6,green,5M.3M.2M.1.5M.1M,450,450,test to package_already,No,0.25,3,12,4
+11/30/2023,UTP CAT6,grey,2.5M,1505,1000,wire cutting  to to be tied,No,0.018,15,153,10.2
+11/30/2023,UTP CAT6,grey,1M,1005,1005,wire cutting  to premolding,No,0,15,153,10.2
+11/30/2023,UTP CAT6,blue,2.5M,1005,1005,wire cutting  to to be wired,No,0,15,153,10.2
+11/30/2023,UTP CAT6,white,2.5M,1005,1005,wire cutting only,No,0,15,153,10.2
+12/1/2023,UTP CAT6,grey,1M,1005,1005,molding to wire tied,No,0.018,15,165,11
+12/1/2023,UTP CAT6,white,2.5M,1005,1005,preprocess to test,No,0.007,15,165,11
+12/1/2023,UTP CAT6,red,2.5M,505,505,preprocess to premolding,No,0,15,165,11
+12/1/2023,UTP CAT6,blue,1M,1005,1005,preprocess to premolding,No,0,15,165,11
+12/1/2023,UTP CAT6,black,2.5M,505,505,preprocess to wire already,No,0,15,165,11
+12/2/2023,UTP CAT6,blue,2.5M,1005,1005,molding-test_already,No,0.006,2,22,11
+12/2/2023,UTP CAT6,blue,1M,1005,600,molding-test_already,No,0.012,2,22,11
+12/2/2023,FTP CAT6,white,1M,6300,6300,wire tied-package_already,No,0.019,13,143,11
+12/2/2023,FTP CAT6,white,5M,4000,4000,package_already,No,0,13,143,11
+12/2/2023,FTP CAT6,white,3M,2500,2500,package_already,No,0,13,143,11
+12/2/2023,FTP CAT6,white,2M,125,125,package_already,No,0,13,143,11
+12/4/2023,UTP CAT6,grey,2.5M,1505,1505,package_already,No,0,15,165,11
+12/4/2023,UTP CAT6,grey,1M,1005,1005,package_already,No,0,15,165,11
+12/4/2023,UTP CAT6,black,2.5M,505,505,molding-package_already,No,0,15,165,11
+12/4/2023,UTP CAT6,blue,2.5M,1005,1005,appearance check-package_already,No,0.019,15,165,11
+12/4/2023,UTP CAT6,blue,1M,1005,1005,appearance check-package_already,No,0.011,15,165,11
+12/4/2023,UTP CAT6,red,2.5M,505,300,molding-package_already,No,0.019,15,165,11
+12/4/2023,UTP CAT6,white,2.5M,1005,400,appearance check-package_already,No,0.015,15,165,11
+12/5/2023,UTP CAT6,red,2.5M,505,205,package_already,No,0.016,15,150,10
+12/5/2023,UTP CAT6,white,2.5M,1005,605,package_already,No,0.018,15,150,10
+12/5/2023,SFTP CAT6A,grey,2M,4050,2050,preprocess-test_already,No,0.019,15,150,10
+12/5/2023,SFTP CAT6A,grey,1.5M,2000,120,preprocess-wire_already,No,0,15,150,10

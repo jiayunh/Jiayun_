@@ -4,7 +4,7 @@ import pandas as pd
 from tabulate import tabulate
 
 # Dropbox access token
-ACCESS_TOKEN = 'sl.BrW9JUb1XqlNvOiPiKJcO6mtaKyLBdEH6tDMtlJYuD6-S13c9JbvOCsx8NtHemOxZN7amlqC3PaNf7mk1ndoMBwQ_OAI4sgj7EsCRsXvJFwJn_hFnYnxdGJ4HC6hlsszXRuJUQ-H0OAyG432N9WIlRE'
+ACCESS_TOKEN = 'sl.BrWhalxRUcpS1moThwq8x71Ungh0A3ix0PtF5dEK3dvVbe6ggt0fg4OisVfliwKhl5EvO7Bhy16jnl5-LWfDjA88nrL4VqQycZFgju43bxNq4d3dt8B8hQgRv37BsNpNyYKLJD28YB0O5KdoFXVZFBA'
 
 # Dropbox file path
 DROPBOX_FILE_PATH = '/production.csv'

@@ -1,4 +1,5 @@
-pandas==1.3.3 
-tabulate
 dropbox==11.0.0
+streamlit
+pandas
+tabulate
 

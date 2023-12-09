@@ -7,6 +7,14 @@ from googleapiclient.discovery import build
 from io import BytesIO
 
 
+import streamlit as st
+import pandas as pd
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
+# Define credentials with an initial value of None
+credentials = None
+
 try:
     credentials = service_account.Credentials.from_service_account_info(
         credentials_dict,
@@ -16,9 +24,13 @@ try:
 except Exception as e:
     st.error(f"Error loading credentials: {e}")
 
+# Check if credentials is not None before building the drive_service
+if credentials:
+    # Build the Google Drive API service
+    drive_service = build('drive', 'v3', credentials=credentials)
+else:
+    st.error("Credentials not available. Unable to build drive_service.")
 
-# Build the Google Drive API service
-drive_service = build('drive', 'v3', credentials=credentials)
 
 # Function to read the contents of the specified file
 def read_drive_file(file_name):

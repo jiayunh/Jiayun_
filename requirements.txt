@@ -3,5 +3,5 @@ streamlit
 pandas
 tabulate
 google-auth==1.35.0  
-
+google-api-python-client==2.23.0  
 

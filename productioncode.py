@@ -1,20 +1,21 @@
 import streamlit as st
 import pandas as pd
 import os
+import toml
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from io import BytesIO
 
-# Load Google Drive API credentials from the JSON file
-SERVICE_ACCOUNT_JSON_PATH = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "myproject.json")
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_JSON_PATH,
+# Load Google Drive API credentials from Streamlit Secrets
+credentials_toml = st.secrets["google_drive_credentials"]
+credentials_dict = toml.loads(credentials_toml)
+credentials = service_account.Credentials.from_service_account_info(
+    credentials_dict,
     scopes=['https://www.googleapis.com/auth/drive']
 )
 
 # Build the Google Drive API service
 drive_service = build('drive', 'v3', credentials=credentials)
-
 
 # Function to read the contents of the specified file
 def read_drive_file(file_name):

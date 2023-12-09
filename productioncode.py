@@ -7,8 +7,6 @@ from googleapiclient.discovery import build
 from io import BytesIO
 
 
-credentials_dict = st.secrets["google_drive_credentials"]
-
 try:
     credentials = service_account.Credentials.from_service_account_info(
         credentials_dict,
@@ -17,6 +15,11 @@ try:
     st.write("Credentials loaded successfully.")
 except Exception as e:
     st.error(f"Error loading credentials: {e}")
+
+print("After credentials loading")
+
+# Build the Google Drive API service
+drive_service = build('drive', 'v3', credentials=credentials)
 
 
 # Build the Google Drive API service

@@ -9,9 +9,12 @@ from io import BytesIO
 # Retrieve the credentials from Streamlit secrets
 credentials_toml = st.secrets["google_drive_credentials"]
 
+st.write(f"Credentials TOML: {credentials_toml}")
+
 try:
     # Load the TOML content
     credentials_dict = toml.loads(credentials_toml)
+    st.write(f"Credentials Dictionary: {credentials_dict}")
     # Do something with credentials_dict
 except Exception as e:
     st.error(f"Error loading TOML: {e}")

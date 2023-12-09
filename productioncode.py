@@ -1,14 +1,11 @@
 import streamlit as st
 import pandas as pd
-import os
-import toml
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from io import BytesIO
 
-
-# Define credentials with an initial value of None
-credentials = None
+# Retrieve credentials from Streamlit secrets
+credentials_dict = st.secrets["google_drive_credentials"]
 
 try:
     credentials = service_account.Credentials.from_service_account_info(
@@ -16,19 +13,19 @@ try:
         scopes=["https://www.googleapis.com/auth/drive"]
     )
     st.write("Credentials loaded successfully.")
-except Exception as e:
-    st.error(f"Error loading credentials: {e}")
 
-# Check if credentials is not None before building the drive_service
-if credentials:
     # Build the Google Drive API service
     drive_service = build('drive', 'v3', credentials=credentials)
-else:
-    st.error("Credentials not available. Unable to build drive_service.")
-
+except Exception as e:
+    st.error(f"Error loading credentials: {e}")
+    drive_service = None
 
 # Function to read the contents of the specified file
 def read_drive_file(file_name):
+    if drive_service is None:
+        st.error("Drive service is not available.")
+        return None
+
     results = drive_service.files().list(
         q=f"name='{file_name}'", pageSize=1, fields="files(id, name)"
     ).execute()
@@ -44,8 +41,10 @@ def read_drive_file(file_name):
 
     return file_content
 
+# Continue with the rest of your code...
+
 # Read the contents of "production.csv"
-file_name = "production.csv"  # assuming this is your file name
+file_name = "production.csv"
 file_content = read_drive_file(file_name)
 
 # If file content is available, display it as a DataFrame
@@ -65,6 +64,7 @@ if file_content:
     st.header("Data from Production (Last 7 Days)")
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
+
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

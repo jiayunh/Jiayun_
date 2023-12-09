@@ -6,20 +6,18 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from io import BytesIO
 
-# Retrieve the credentials from Streamlit secrets
-credentials_toml = st.secrets["google_drive_credentials"]
+import streamlit as st
 
-st.write(f"Credentials TOML: {credentials_toml}")
+# Retrieve the credentials from Streamlit secrets
+credentials_dict = st.secrets["google_drive_credentials"]
 
 try:
-    # Load the TOML content
-    credentials_dict = toml.loads(credentials_toml)
+    # Do something with credentials_dict directly
     st.write(f"Credentials Dictionary: {credentials_dict}")
-    # Do something with credentials_dict
 except Exception as e:
-    st.error(f"Error loading TOML: {e}")
+    st.error(f"Error handling credentials: {e}")
+
     
-credentials_dict = toml.loads(credentials_toml)
 credentials = service_account.Credentials.from_service_account_info(
     credentials_dict,
     scopes=['https://www.googleapis.com/auth/drive']

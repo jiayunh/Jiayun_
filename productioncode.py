@@ -6,22 +6,18 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from io import BytesIO
 
-import streamlit as st
 
-# Retrieve the credentials from Streamlit secrets
 credentials_dict = st.secrets["google_drive_credentials"]
 
 try:
-    # Do something with credentials_dict directly
-    st.write(f"Credentials Dictionary: {credentials_dict}")
+    credentials = service_account.Credentials.from_service_account_info(
+        credentials_dict,
+        scopes=["https://www.googleapis.com/auth/drive"]
+    )
+    st.write("Credentials loaded successfully.")
 except Exception as e:
-    st.error(f"Error handling credentials: {e}")
+    st.error(f"Error loading credentials: {e}")
 
-    
-credentials = service_account.Credentials.from_service_account_info(
-    credentials_dict,
-    scopes=['https://www.googleapis.com/auth/drive']
-)
 
 # Build the Google Drive API service
 drive_service = build('drive', 'v3', credentials=credentials)

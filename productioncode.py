@@ -16,11 +16,7 @@ try:
 except Exception as e:
     st.error(f"Error loading credentials: {e}")
 
-print("After credentials loading")
-
-# Build the Google Drive API service
-drive_service = build('drive', 'v3', credentials=credentials)
-
+st.write("Credentials loaded successfully.")
 
 # Build the Google Drive API service
 drive_service = build('drive', 'v3', credentials=credentials)

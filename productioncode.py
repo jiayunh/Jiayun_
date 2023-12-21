@@ -65,7 +65,7 @@ if file_content:
     st.write(last_7_days_data)
 
     # Warning Section
-    # Calculate the date one month ago
+   # Calculate the date one month ago
     today_minus_1_month = pd.to_datetime('today') - pd.DateOffset(days=30)
 
     # Assuming 'Date' is a column in your DataFrame
@@ -74,19 +74,21 @@ if file_content:
     # Filter data for the last month
     last_month_data = df[df['Date'] >= today_minus_1_month]
 
-    # Warning Section
-    st.subheader("Warning Section")
-    abnormal_columns_last_month = [col for col in last_month_data.columns if 'Yes' in last_month_data[col].values]
+    # Abnormal Warning Section
+    st.subheader("Abnormal Warning Section")
     
-    if abnormal_columns_last_month:
-        st.warning(f"The following columns contain 'Yes' values in the last month and may require attention: {', '.join(abnormal_columns_last_month)}")
+    # Calculate mistake rate for each row
+    mistake_rates = (last_month_data.filter(like='Mistake') / last_month_data.filter(like='Total')).replace([np.inf, -np.inf], np.nan) * 100
 
-        # List all data containing 'Yes' in abnormal columns in the last month
-        st.subheader("Data with 'Yes' Values in Abnormal Columns (Last Month)")
-        abnormal_data_last_month = last_month_data[last_month_data[abnormal_columns_last_month].apply(lambda x: 'Yes' in x.values, axis=1)]
-        st.write(abnormal_data_last_month)
+    # Filter rows with mistake rates greater than or equal to 2.0%
+    abnormal_rows = last_month_data[mistake_rates.ge(2.0).any(axis=1)]
+
+    if not abnormal_rows.empty:
+        st.warning("The following rows have mistake rates greater than or equal to 2.0% in the last month:")
+        st.write(abnormal_rows)
     else:
-        st.success("No abnormal columns found in the last month.")
+        st.success("No rows with mistake rates greater than or equal to 2.0% found in the last month.")
+
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

@@ -41,7 +41,6 @@ def read_drive_file(file_name):
 
     return file_content
 
-# Continue with the rest of your code...
 
 # Read the contents of "production.csv"
 file_name = "production.csv"
@@ -65,6 +64,13 @@ if file_content:
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
 
+    # Warning Section
+    st.sidebar.title("Warning Section")
+    abnormal_columns = [col for col in df.columns if 'Yes' in df[col].values]
+    if abnormal_columns:
+        st.warning(f"The following columns contain 'Yes' values and may require attention: {', '.join(abnormal_columns)}")
+    else:
+        st.success("No abnormal columns found.")
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

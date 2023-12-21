@@ -41,7 +41,6 @@ def read_drive_file(file_name):
 
     return file_content
 
-
 # Read the contents of "production.csv"
 file_name = "production.csv"
 file_content = read_drive_file(file_name)
@@ -58,6 +57,10 @@ if file_content:
 
     # Assuming 'Date' is a column in your DataFrame
     df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Set pandas options to display all columns and expand the width of the 'Steps' column
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_colwidth', None)
 
     # Display data for the last 7 days
     st.header("Data from Production (Last 7 Days)")
@@ -154,7 +157,10 @@ if file_content:
     st.write(result_df)
 else:
     st.error("Unable to load data from Google Drive.")
-
+    
+# Reset pandas options to their default values after displaying the DataFrames
+pd.reset_option('display.max_columns')
+pd.reset_option('display.max_colwidth')
 
 
 

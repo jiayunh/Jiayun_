@@ -100,11 +100,16 @@ if file_content:
 
     # Display details if there are abnormal rows
     if abnormal_rows.any():
-        st.warning("Details of Rows with Abnormal Mistake Rates:")
-        abnormal_rows_details = df[abnormal_rows]
-        st.write(abnormal_rows_details)
+        # Toggle button to show/hide details
+        details_button = st.button("Toggle Details of Rows with Abnormal Mistake Rates")
+    
+        if details_button:
+             st.warning("Details of Rows with Abnormal Mistake Rates:")
+             abnormal_rows_details = df[abnormal_rows]
+             st.write(abnormal_rows_details)
     else:
         st.success("No abnormal rows found in the dataset.")
+
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

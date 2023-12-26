@@ -30,7 +30,7 @@ def read_drive_file(file_name):
     results = drive_service.files().list(
         q=f"name='{file_name}'", pageSize=1, fields="files(id, name)"
     ).execute()
-    
+
     items = results.get('files', [])
     if not items:
         st.error(f"File '{file_name}' not found in Google Drive.")
@@ -58,7 +58,7 @@ if file_content:
 
     # Assuming 'Date' is a column in your DataFrame
     df['Date'] = pd.to_datetime(df['Date'])
-    
+
     # Set pandas options to display all columns and expand the width of the 'Steps' column
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_colwidth', None)
@@ -67,30 +67,29 @@ if file_content:
     st.header("Data from Production (Last 7 Days)")
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
-    
+
     # Warning Section
-st.subheader("Warning Section")
+    st.subheader("Warning Section")
 
-# Convert 'Mistake_rates' column to numeric, handling errors with coerce
-df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
+    # Convert 'Mistake_rates' column to numeric, handling errors with coerce
+    df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
 
-# Identify abnormal rows based on mistake rates
-abnormal_rows = df['Mistake_rates'].ge(2.0)
+    # Identify abnormal rows based on mistake rates
+    abnormal_rows = df['Mistake_rates'].ge(2.0)
 
-# Count the number of abnormal rows for each threshold
-for threshold in range(2, 12):
-    count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 1)].sum()
-    st.subheader(f"Count of Rows with Mistake Rates between {threshold}% and {threshold + 1}%")
-    st.write(f"Number of rows: {count}")
+    # Count the number of abnormal rows for each threshold
+    for threshold in range(2, 12):
+        count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 1)].sum()
+        st.subheader(f"Count of Rows with Mistake Rates between {threshold}% and {threshold + 1}%")
+        st.write(f"Number of rows: {count}")
 
-# Display details if there are abnormal rows
-if abnormal_rows.any():
-    st.warning("Details of Rows with Abnormal Mistake Rates:")
-    abnormal_rows_details = df[abnormal_rows]
-    st.write(abnormal_rows_details)
-else:
-    st.success("No abnormal rows found in the dataset.")
-
+    # Display details if there are abnormal rows
+    if abnormal_rows.any():
+        st.warning("Details of Rows with Abnormal Mistake Rates:")
+        abnormal_rows_details = df[abnormal_rows]
+        st.write(abnormal_rows_details)
+    else:
+        st.success("No abnormal rows found in the dataset.")
 
     # Filter Data Section
     st.sidebar.title("Filter Data")
@@ -115,7 +114,7 @@ else:
         filtered_df = filter_data(df, cable_type, length, color)
         st.subheader("Filtered Data")
         st.write(filtered_df)
-        
+
         if filtered_df.empty:
             st.info("No matching entries.")
 
@@ -136,7 +135,7 @@ else:
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
         last_step = group.iloc[-1]["Steps"]
-        
+
         # Add data to the table
         result_table = {
             "Type": name[0],
@@ -145,7 +144,7 @@ else:
             "Total_time_per_person": total_time_per_person,
             "Last_step": last_step,
         }
-        
+
         # Append the result table to the list
         tables.append(result_table)
 
@@ -157,7 +156,7 @@ else:
     st.write(result_df)
 else:
     st.error("Unable to load data from Google Drive.")
-    
+
 # Reset pandas options to their default values after displaying the DataFrames
 pd.reset_option('display.max_columns')
 pd.reset_option('display.max_colwidth')

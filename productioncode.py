@@ -52,16 +52,6 @@ if file_content:
 
     # Display data in Streamlit app
     st.title("Patch Cord Production App", anchor='center', key='title')
-    st.markdown(
-        """<style>
-             .css-1t42sxy-textContainer {
-                 color: darkblue;
-                 font-size: 2em;
-                 text-align: center;
-             }
-           </style>""",
-         unsafe_allow_html=True
-    )
 
     # Calculate the date seven days ago
     today_minus_7_days = pd.to_datetime('today') - pd.DateOffset(days=7)

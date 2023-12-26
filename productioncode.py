@@ -177,10 +177,8 @@ if file_content:
     result_df = pd.DataFrame(tables)
 
    # Display the final DataFrame
-   st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
-    st.write(result_df)
-
-    
+    st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
+    st.write(result_df)   
 
 else:
     st.error("Unable to load data from Google Drive.")

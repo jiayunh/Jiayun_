@@ -68,30 +68,30 @@ if file_content:
     st.write(last_7_days_data)
 
     # Warning Section
-st.subheader("Warning Section")
+   st.subheader("Warning Section")
 
-# Calculate mistake rate for each row
-mistake_rates = (df.filter(like='Mistake') / df.filter(like='Total')).replace([np.inf, -np.inf], np.nan) * 100
+   # Calculate mistake rate for each row
+   mistake_rates = (df.filter(like='Mistake') / df.filter(like='Total')).replace([np.inf, -np.inf], np.nan) * 100
 
-# Identify abnormal types based on mistake rates
-abnormal_types = mistake_rates[mistake_rates.ge(2.0).any(axis=1)].index.unique(level='Type')
+   # Identify abnormal types based on mistake rates
+   abnormal_types = mistake_rates[mistake_rates.ge(2.0).any(axis=1)].index.unique(level='Type')
 
-if not abnormal_types.empty:
-    st.warning("The following types have abnormal mistake rates:")
-    st.write(abnormal_types)
+   if not abnormal_types.empty:
+      st.warning("The following types have abnormal mistake rates:")
+      st.write(abnormal_types)
 
-    # Display counts for different mistake rate ranges
-    for threshold in range(2, 12):
-        count = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].shape[0]
-        st.subheader(f"Count of Types with Mistake Rates between {threshold}% and {threshold + 1}%")
-        st.write(f"Number of types: {count}")
+   # Display counts for different mistake rate ranges
+      for threshold in range(2, 12):
+          count = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].shape[0]
+          st.subheader(f"Count of Types with Mistake Rates between {threshold}% and {threshold + 1}%")
+          st.write(f"Number of types: {count}")
 
-        # Display details if there are types in this range
-        if count > 0:
-            types_in_range = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].index.unique(level='Type')
-            st.write(types_in_range)
+          # Display details if there are types in this range
+          if count > 0:
+              types_in_range = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].index.unique(level='Type')
+              st.write(types_in_range)
 else:
-    st.success("No abnormal columns found in the dataset.")
+      st.success("No abnormal columns found in the dataset.")
 
 
 

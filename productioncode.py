@@ -78,12 +78,16 @@ if file_content:
     abnormal_rows = df['Mistake_rates'].ge(0.02) & ~df['Mistake_rates'].isna()
 
     # Count the number of abnormal rows for each threshold
-    abnormal_count = abnormal_rows.sum()
+    abnormal_counts = []
 
     for threshold in np.arange(0.02, 0.12, 0.01):
         count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.1)].sum()
-        st.subheader(f"Count of Rows with Mistake Rates between {threshold:.2f} and {threshold + 0.01:.2f}")
-        st.write(f"Number of rows: {count}")
+        abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
+
+    # Display the results in an organized table
+    st.subheader("Count of Rows with Mistake Rates")
+    abnormal_table = pd.DataFrame(abnormal_counts)
+    st.table(abnormal_table)
         
     # Function to calculate the total of abnormal (mistakes >=0.020)
     total_abnormal = abnormal_rows.sum()

@@ -139,7 +139,6 @@ if file_content:
             st.info("No matching entries.")
 
     # Results Section
-    st.sidebar.title("Results")
 
     # Convert "Total_time" and "Time_per_person" to numeric
     df["Total_time"] = pd.to_numeric(df["Total_time"], errors="coerce")

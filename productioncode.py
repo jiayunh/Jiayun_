@@ -153,17 +153,11 @@ if file_content:
     # Store the results in a list of tables
     tables = []
 
-    # Define highlight_color outside the loop
-    highlight_color = ''
-
     # Display the results
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
-
-        # Highlight rows where last_step does not contain the word "storage"
-        highlight_color = 'background-color: red;' if 'storage' not in str(last_step).lower() else ''
 
         # Add data to the table
         result_table = {
@@ -173,8 +167,7 @@ if file_content:
             "Order_number": name[3],
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
-            "Last_step": last_step,
-            "Highlight": last_step if 'storage' not in str(last_step).lower() else None
+            "Last_step": last_step
         }
 
         # Append the result table to the list
@@ -183,14 +176,11 @@ if file_content:
     # Convert the list of tables to a DataFrame
     result_df = pd.DataFrame(tables)
 
-    # Apply styling to the "Highlight" column
-    styled_result_df = result_df.style.apply(lambda row: highlight_color, subset=["Highlight"], axis=1)
+   # Display the final DataFrame
+   st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
+    st.write(result_df)
 
-    # Convert styled DataFrame to HTML
-    html_result = styled_result_df.render()
-
-    # Display the HTML using markdown
-    st.markdown(html_result, unsafe_allow_html=True)
+    
 
 else:
     st.error("Unable to load data from Google Drive.")

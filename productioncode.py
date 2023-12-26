@@ -101,7 +101,7 @@ if file_content:
     # Display details if there are abnormal rows
     if abnormal_rows.any():
         # Toggle button to show/hide details
-        details_button = st.button("Toggle Details of Rows with Abnormal Mistake Rates")
+        details_button = st.button("Toggle Details")
     
         if details_button:
              st.warning("Details of Rows with Abnormal Mistake Rates:")

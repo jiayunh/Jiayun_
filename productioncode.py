@@ -156,7 +156,7 @@ if file_content:
     # Display the results
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
-        last_step = group.iloc[-1]["Steps"]
+        last_step = group.iloc[-1]["End_Steps"]
 
         # Add data to the table
         result_table = {

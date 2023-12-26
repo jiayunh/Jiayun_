@@ -186,9 +186,12 @@ if file_content:
     # Apply styling to the "Highlight" column
     styled_result_df = result_df.style.apply(lambda row: highlight_color, subset=["Highlight"], axis=1)
 
-    # Display the final DataFrame
-    st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
-    st.write(styled_result_df.render(), unsafe_allow_html=True) 
+    # Convert styled DataFrame to HTML
+    html_result = styled_result_df.render()
+
+    # Display the HTML using markdown
+    st.markdown(html_result, unsafe_allow_html=True)
+
 else:
     st.error("Unable to load data from Google Drive.")
 

@@ -67,26 +67,30 @@ if file_content:
     st.header("Data from Production (Last 7 Days)")
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
-
+    
     # Warning Section
-    st.subheader("Warning Section")
+st.subheader("Warning Section")
 
-    # Identify abnormal rows based on mistake rates
-    abnormal_rows = df['Mistake_rates'].ge(2.0)
+# Convert 'Mistake_rates' column to numeric, handling errors with coerce
+df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
 
-    # Count the number of abnormal rows for each threshold
-    for threshold in range(2, 12):
-        count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 1)].sum()
-        st.subheader(f"Count of Rows with Mistake Rates between {threshold}% and {threshold + 1}%")
-        st.write(f"Number of rows: {count}")
+# Identify abnormal rows based on mistake rates
+abnormal_rows = df['Mistake_rates'].ge(2.0)
 
-    # Display details if there are abnormal rows
-    if abnormal_rows.any():
-        st.warning("Details of Rows with Abnormal Mistake Rates:")
-        abnormal_rows_details = df[abnormal_rows]
-        st.write(abnormal_rows_details)
-    else:
-        st.success("No abnormal rows found in the dataset.")
+# Count the number of abnormal rows for each threshold
+for threshold in range(2, 12):
+    count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 1)].sum()
+    st.subheader(f"Count of Rows with Mistake Rates between {threshold}% and {threshold + 1}%")
+    st.write(f"Number of rows: {count}")
+
+# Display details if there are abnormal rows
+if abnormal_rows.any():
+    st.warning("Details of Rows with Abnormal Mistake Rates:")
+    abnormal_rows_details = df[abnormal_rows]
+    st.write(abnormal_rows_details)
+else:
+    st.success("No abnormal rows found in the dataset.")
+
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

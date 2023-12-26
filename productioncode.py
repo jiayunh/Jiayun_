@@ -81,7 +81,7 @@ if file_content:
     abnormal_counts = []
 
     for threshold in np.arange(0.02, 0.10, 0.01):
-        count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.1)].sum()
+        count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.01)].sum()
         abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
 
     # Count of Rows with Mistake Rates >= 0.10

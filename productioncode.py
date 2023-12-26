@@ -75,7 +75,7 @@ if file_content:
     df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
 
     # Identify abnormal rows based on mistake rates
-    abnormal_rows = df['Mistake_rates'].ge(2.0) & ~df['Mistake_rates'].isna()
+    abnormal_rows = df['Mistake_rates'].ge(0.01) & ~df['Mistake_rates'].isna()
 
     # Count the number of abnormal rows for each threshold
     for threshold in range(2, 12):

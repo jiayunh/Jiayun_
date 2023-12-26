@@ -165,7 +165,7 @@ if file_content:
             "Type": name[0],
             "Color": name[1],
             "Length": name[2],
-            ""Order_number": name[3],
+            "Order_number": name[3],
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step,

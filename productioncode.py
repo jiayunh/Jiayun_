@@ -182,7 +182,7 @@ if file_content:
 
     # Display the final DataFrame
     st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
-    st.write(result_df,, unsafe_allow_html=True)
+    st.write(result_df, unsafe_allow_html=True)
 else:
     st.error("Unable to load data from Google Drive.")
 

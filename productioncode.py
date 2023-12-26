@@ -78,7 +78,7 @@ if file_content:
     abnormal_rows = df['Mistake_rates'].ge(0.02) & ~df['Mistake_rates'].isna()
 
     # Count the number of abnormal rows for each threshold
-    for threshold in np.arange(0.2, 1.2, 0.1):
+    for threshold in np.arange(0.02, 0.12, 0.01):
         count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.1)].sum()
         st.subheader(f"Count of Rows with Mistake Rates between {threshold:.2f}% and {threshold + 0.1:.2f}%")
         st.write(f"Number of rows: {count}")

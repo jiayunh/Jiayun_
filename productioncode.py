@@ -71,28 +71,22 @@ if file_content:
     # Warning Section
     st.subheader("Warning Section")
 
-    # Calculate mistake rate for each row
-    mistake_rates = (df.filter(like='Mistake') / df.filter(like='Total')).replace([np.inf, -np.inf], np.nan) * 100
+    # Identify abnormal rows based on mistake rates
+    abnormal_rows = df['Mistake_rates'].ge(2.0)
 
-    # Identify abnormal types based on mistake rates
-    abnormal_types = mistake_rates[mistake_rates.ge(2.0).any(axis=1)].index.get_level_values('Type').unique()
+    # Count the number of abnormal rows for each threshold
+    for threshold in range(2, 12):
+        count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 1)].sum()
+        st.subheader(f"Count of Rows with Mistake Rates between {threshold}% and {threshold + 1}%")
+        st.write(f"Number of rows: {count}")
 
-    if not abnormal_types.empty:
-        st.warning("The following types have abnormal mistake rates:")
-        st.write(abnormal_types)
-
-        # Display counts for different mistake rate ranges
-        for threshold in range(2, 12):
-            count = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].shape[0]
-            st.subheader(f"Count of Types with Mistake Rates between {threshold}% and {threshold + 1}%")
-            st.write(f"Number of types: {count}")
-
-            # Display details if there are types in this range
-            if count > 0:
-                types_in_range = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].index.get_level_values('Type').unique()
-                st.write(types_in_range)
+    # Display details if there are abnormal rows
+    if abnormal_rows.any():
+        st.warning("Details of Rows with Abnormal Mistake Rates:")
+        abnormal_rows_details = df[abnormal_rows]
+        st.write(abnormal_rows_details)
     else:
-        st.success("No abnormal columns found in the dataset.")
+        st.success("No abnormal rows found in the dataset.")
 
     # Filter Data Section
     st.sidebar.title("Filter Data")

@@ -68,28 +68,31 @@ if file_content:
     st.write(last_7_days_data)
 
     # Warning Section
-     # Calculate the date one month ago
-    today_minus_1_month = pd.to_datetime('today') - pd.DateOffset(days=30)
+st.subheader("Warning Section")
 
-    # Assuming 'Date' is a column in your DataFrame
-    df['Date'] = pd.to_datetime(df['Date'])
+# Calculate mistake rate for each row
+mistake_rates = (df.filter(like='Mistake') / df.filter(like='Total')).replace([np.inf, -np.inf], np.nan) * 100
 
-    # Filter data for the last month
-    last_month_data = df[df['Date'] >= today_minus_1_month]
+# Identify abnormal types based on mistake rates
+abnormal_types = mistake_rates[mistake_rates.ge(2.0).any(axis=1)].index.unique(level='Type')
 
-    # Warning Section
-    st.subheader("Warning Section")
-    abnormal_columns_last_month = [col for col in last_month_data.columns if 'Yes' in last_month_data[col].values]
-    
-    if abnormal_columns_last_month:
-        st.warning(f"The following columns contain 'Yes' values in the last month and may require attention: {', '.join(abnormal_columns_last_month)}")
+if not abnormal_types.empty:
+    st.warning("The following types have abnormal mistake rates:")
+    st.write(abnormal_types)
 
-        # List all data containing 'Yes' in abnormal columns in the last month
-        st.subheader("Data with 'Yes' Values in Abnormal Columns (Last Month)")
-        abnormal_data_last_month = last_month_data[last_month_data[abnormal_columns_last_month].apply(lambda x: 'Yes' in x.values, axis=1)]
-        st.write(abnormal_data_last_month)
-    else:
-        st.success("No abnormal columns found in the last month.")
+    # Display counts for different mistake rate ranges
+    for threshold in range(2, 12):
+        count = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].shape[0]
+        st.subheader(f"Count of Types with Mistake Rates between {threshold}% and {threshold + 1}%")
+        st.write(f"Number of types: {count}")
+
+        # Display details if there are types in this range
+        if count > 0:
+            types_in_range = mistake_rates[(mistake_rates.ge(threshold) & mistake_rates.lt(threshold + 1)).any(axis=1)].index.unique(level='Type')
+            st.write(types_in_range)
+else:
+    st.success("No abnormal columns found in the dataset.")
+
 
 
     # Filter Data Section

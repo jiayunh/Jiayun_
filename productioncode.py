@@ -64,12 +64,12 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Display data for the last 7 days
-    st.header("Data from Production (Last 7 Days)")
+    st.markdown("<h1 style='text-align: center;'>Data from Production (Last 7 Days)</h1>", unsafe_allow_html=True)
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
 
     # Warning Section
-    st.subheader("Warning Section")
+    st.markdown("<h1 style='text-align: center;'>Warning Section</h1>", unsafe_allow_html=True)
 
     # Convert 'Mistake_rates' column to numeric, handling errors with coerce
     df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
@@ -169,7 +169,7 @@ if file_content:
     result_df = pd.DataFrame(tables)
 
     # Display the final DataFrame
-    st.subheader("Total Time/person")
+    st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
     st.write(result_df)
 else:
     st.error("Unable to load data from Google Drive.")

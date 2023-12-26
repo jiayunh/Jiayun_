@@ -50,13 +50,11 @@ file_content = read_drive_file(file_name)
 if file_content:
     df = pd.read_csv(BytesIO(file_content))
 
-    # Display data in Streamlit app
-    
+    # Display data in Streamlit app    
     st.markdown(
-    """<h1 style='text-align: center; color: darkblue;'>Patch Cord Production App</h1>""",
+    """<h1 style='text-align: center; color: blue;'>Patch Cord Production App</h1>""",
     unsafe_allow_html=True
     )
-
 
     # Calculate the date seven days ago
     today_minus_7_days = pd.to_datetime('today') - pd.DateOffset(days=7)

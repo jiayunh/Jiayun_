@@ -93,7 +93,7 @@ if file_content:
 
     # Function to calculate the total of abnormal (mistakes >=0.020)
     total_abnormal = abnormal_rows.sum()
-    abnormal_counts.append({"Threshold": "Total Abnormal", "Count":{total_abnormal} )
+    abnormal_counts.append({"Threshold": "Total Abnormal", "Count":{total_abnormal})
     
     # Display the results in an organized table
     st.subheader("Count of Rows with Mistake Rates")

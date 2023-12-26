@@ -84,6 +84,10 @@ if file_content:
         count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.1)].sum()
         abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
 
+    # Count of Rows with Mistake Rates >= 0.10
+    count_high_mistake_rates = abnormal_rows[df['Mistake_rates'] >= 0.10].sum()
+    abnormal_counts.append({"Threshold": ">= 0.10", "Count": count_high_mistake_rates})
+
     # Display the results in an organized table
     st.subheader("Count of Rows with Mistake Rates")
     abnormal_table = pd.DataFrame(abnormal_counts)
@@ -93,12 +97,6 @@ if file_content:
     total_abnormal = abnormal_rows.sum()
     st.subheader("Total Abnormal Rows (Mistake Rates >= 0.020)")
     st.write(f"Total abnormal rows: {total_abnormal}")
-
-    # Function to count all rates once the mistake rates >= 0.10
-    high_mistake_rates = df['Mistake_rates'].ge(0.10)
-    count_high_mistake_rates = high_mistake_rates.sum()
-    st.subheader("Count of Rows with Mistake Rates >= 0.10")
-    st.write(f"Number of rows: {count_high_mistake_rates}")
 
     # Display details if there are abnormal rows
     if abnormal_rows.any():

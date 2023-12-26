@@ -146,9 +146,10 @@ if file_content:
     # Convert "Total_time" and "Time_per_person" to numeric
     df["Total_time"] = pd.to_numeric(df["Total_time"], errors="coerce")
     df["Time_per_person"] = pd.to_numeric(df["Time_per_person"], errors="coerce")
+    df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
 
     # Group by Type, Color, and Length
-    grouped_df = df.groupby(["Type", "Color", "Length"])
+    grouped_df = df.groupby(["Type", "Color", "Length","Order_number"])
 
     # Store the results in a list of tables
     tables = []
@@ -156,6 +157,7 @@ if file_content:
     # Display the results
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
+        total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
 
         # Add data to the table
@@ -163,7 +165,9 @@ if file_content:
             "Type": name[0],
             "Color": name[1],
             "Length": name[2],
+            ""Order_number": name[3],
             "Total_time_per_person": total_time_per_person,
+            "Total_production_time": total_production_time,
             "Last_step": last_step,
         }
 

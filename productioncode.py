@@ -13,7 +13,7 @@ try:
         credentials_dict,
         scopes=["https://www.googleapis.com/auth/drive"]
     )
-    st.write("Credentials loaded successfully.")
+    st.write("success!")
 
     # Build the Google Drive API service
     drive_service = build('drive', 'v3', credentials=credentials)

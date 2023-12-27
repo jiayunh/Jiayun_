@@ -210,7 +210,7 @@ if file_content:
     if st.button("已装箱入库"):
        # Filter and sort the DataFrame
        filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-       filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
+       
         
        # Display the filtered DataFrame
        st.markdown("<h2 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
@@ -220,7 +220,7 @@ if file_content:
     if st.button("未装箱入库"):
     # Filter and sort the DataFrame
        non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-       non_storage_df['Date'] = non_storage_df['Date'].dt.strftime('%Y-%m-%d')
+       
        # Display the filtered DataFrame
        st.markdown("<h2 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
        st.write(non_storage_df)

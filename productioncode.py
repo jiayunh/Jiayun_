@@ -60,7 +60,7 @@ if file_content:
     today_minus_7_days = pd.to_datetime('today') - pd.DateOffset(days=7)
 
     # Assuming 'Date' is a column in your DataFrame
-    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
+    df['Date'] = pd.to_datetime(df['Date'])
 
     # Set pandas options to display all columns and expand the width of the 'Steps' column
     pd.set_option('display.max_columns', None)

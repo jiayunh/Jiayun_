@@ -160,7 +160,7 @@ if file_content:
         filtered_df = filter_data(df, cable_type, length, color)
         filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
         filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
-        st.subheader("筛选数据展示")
+        st.subheader(f"{cable_type}, {length}, {color} 筛选数据展示")
         st.write(filtered_df)
         
 

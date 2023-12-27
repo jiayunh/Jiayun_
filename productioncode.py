@@ -110,6 +110,7 @@ if file_content:
         if details_button:
              st.warning("Details of Rows with Abnormal Mistake Rates:")
              abnormal_rows_details = df[abnormal_rows]
+             abnormal_rows_details['Date'] = abnormal_rows_details['Date'].dt.strftime('%Y-%m-%d')
              st.write(abnormal_rows_details)
     else:
         st.success("No abnormal rows found in the dataset.")
@@ -198,6 +199,7 @@ if file_content:
 
     # Convert the list of tables to a DataFrame
     result_df = pd.DataFrame(tables)
+    result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
    
 
    # Display the final DataFrame
@@ -208,7 +210,8 @@ if file_content:
     if st.button("已装箱入库"):
        # Filter and sort the DataFrame
        filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-
+       filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
+        
        # Display the filtered DataFrame
        st.markdown("<h2 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
        st.write(filtered_df)
@@ -217,7 +220,7 @@ if file_content:
     if st.button("未装箱入库"):
     # Filter and sort the DataFrame
        non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-
+       non_storage_df['Date'] = non_storage_df['Date'].dt.strftime('%Y-%m-%d')
        # Display the filtered DataFrame
        st.markdown("<h2 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
        st.write(non_storage_df)

@@ -163,10 +163,10 @@ if file_content:
         # Add data to the table
         result_table = {
             "Date":date,
-            "Type": name[1],
-            "Color": name[2],
-            "Length": name[3],
-            "Order_number": name[4],
+            "Type": name[0],
+            "Color": name[1],
+            "Length": name[2],
+            "Order_number": name[3],
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

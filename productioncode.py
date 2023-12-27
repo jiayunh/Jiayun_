@@ -138,7 +138,7 @@ if file_content:
     
     
     # Filter Data Section 2
-    st.sidebar.title("选择数据")
+    st.sidebar.title("选择跳线数据")
     cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
     color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
     length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))
@@ -160,7 +160,7 @@ if file_content:
         filtered_df = filter_data(df, cable_type, length, color)
         filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
         filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
-        st.subheader("选取数据展示")
+        st.subheader("筛选数据展示")
         st.write(filtered_df)
         
 

@@ -52,7 +52,7 @@ if file_content:
 
     # Display data in Streamlit app    
     st.markdown(
-    """<h1 style='text-align: center; color: royalblue;'>跳线生产App</h1>""",
+    """<h1 style='text-align: center; color: royalblue;'>跳线生产分析</h1>""",
     unsafe_allow_html=True
     )
 
@@ -67,12 +67,12 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Display data for the last 7 days
-    st.markdown("<h1 style='text-align: center;'>Data from Production (Last 7 Days)</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
 
     # Warning Section
-    st.markdown("<h1 style='text-align: center;'>Warning Section</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
 
     # Convert 'Mistake_rates' column to numeric, handling errors with coerce
     df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
@@ -104,7 +104,7 @@ if file_content:
     # Display details if there are abnormal rows
     if abnormal_rows.any():
         # Toggle button to show/hide details
-        details_button = st.button("Toggle Details")
+        details_button = st.button("点击查看详情")
     
         if details_button:
              st.warning("Details of Rows with Abnormal Mistake Rates:")
@@ -115,7 +115,7 @@ if file_content:
 
 
     # Filter Data Section
-    st.sidebar.title("Filter Data")
+    st.sidebar.title("选取数据")
     cable_type = st.sidebar.selectbox("Select Cable Type", [''] + sorted(df['Type'].unique().tolist()))
     color = st.sidebar.selectbox("Select Color", [''] + sorted(df['Color'].astype(str).unique().tolist()))
     length = st.sidebar.selectbox("Select Length", [''] + sorted(df['Length'].astype(str).unique().tolist()))
@@ -177,7 +177,7 @@ if file_content:
     result_df = pd.DataFrame(tables)
 
    # Display the final DataFrame
-    st.markdown("<h1 style='text-align: center;'>Total Time/person</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>总工时/每人</h1>", unsafe_allow_html=True)
     st.write(result_df)   
 
 else:

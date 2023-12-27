@@ -180,6 +180,15 @@ if file_content:
     st.markdown("<h1 style='text-align: center;'>总工时/每人</h1>", unsafe_allow_html=True)
     st.write(result_df)   
 
+    # Add a filter button
+    if st.button("已装箱入库"):
+       # Filter and sort the DataFrame
+       filtered_df = result_df[result_df['End_Steps'].str.contains('storage', case=False, na=False)].sort_values(by='End_Steps')
+
+       # Display the filtered DataFrame
+       st.markdown("<h1 style='text-align: center;'>展示结果</h1>", unsafe_allow_html=True)
+       st.write(filtered_df)
+
 else:
     st.error("Unable to load data from Google Drive.")
 

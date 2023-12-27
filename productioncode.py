@@ -70,6 +70,7 @@ if file_content:
     st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
+    last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
     st.write(last_7_days_data)
 
     # Warning Section

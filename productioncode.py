@@ -158,13 +158,15 @@ if file_content:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
+        date=group[-1]["Date"]
 
         # Add data to the table
         result_table = {
-            "Type": name[0],
-            "Color": name[1],
-            "Length": name[2],
-            "Order_number": name[3],
+            "Date=date,
+            "Type": name[1],
+            "Color": name[2],
+            "Length": name[3],
+            "Order_number": name[4],
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

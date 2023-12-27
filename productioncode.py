@@ -96,7 +96,7 @@ if file_content:
     abnormal_counts.append({"Threshold": "Total Abnormal", "Count":total_abnormal})
     
     # Display the results in an organized table
-    st.subheader("Count of Rows with Mistake Rates")
+    st.subheader("不良率统计")
     abnormal_table = pd.DataFrame(abnormal_counts)
     st.table(abnormal_table)
         
@@ -133,9 +133,9 @@ if file_content:
 
         return filtered_data
 
-    if st.sidebar.button("Filter Data"):
+    if st.sidebar.button("开始"):
         filtered_df = filter_data(df, cable_type, length, color)
-        st.subheader("Filtered Data")
+        st.subheader("选取数据展示")
         st.write(filtered_df)
 
         if filtered_df.empty:

@@ -114,7 +114,7 @@ if file_content:
         st.success("No abnormal rows found in the dataset.")
 
     #Filter Data 1
-     st.sidebar.title("选取生产数据")
+    st.sidebar.title("选取生产数据")
 
     # Add a selectbox for month and year filtering
     selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
@@ -126,7 +126,6 @@ if file_content:
     ]
     
     
-
     # Filter Data Section 2
     st.sidebar.title("选择数据")
     cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))

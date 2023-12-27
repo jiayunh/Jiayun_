@@ -52,7 +52,7 @@ if file_content:
 
     # Display data in Streamlit app    
     st.markdown(
-    """<h1 style='text-align: center; color: royalblue;'>Patch Cord Production App</h1>""",
+    """<h1 style='text-align: center; color: royalblue;'>跳线生产App</h1>""",
     unsafe_allow_html=True
     )
 

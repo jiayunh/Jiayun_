@@ -118,7 +118,7 @@ if file_content:
 
     # Add a selectbox for month and year filtering
     selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
-    selected_year = st.sidebar.selectbox("选择年份", range(2022, 2024))
+    selected_year = st.sidebar.selectbox("选择年份", range(2023, 2025))
 
     #Filter the DataFrame based on selected month and year
     filtered_by_date_df = df[

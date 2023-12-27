@@ -116,9 +116,9 @@ if file_content:
 
     # Filter Data Section
     st.sidebar.title("选取数据")
-    cable_type = st.sidebar.selectbox("Select Cable Type", [''] + sorted(df['Type'].unique().tolist()))
-    color = st.sidebar.selectbox("Select Color", [''] + sorted(df['Color'].astype(str).unique().tolist()))
-    length = st.sidebar.selectbox("Select Length", [''] + sorted(df['Length'].astype(str).unique().tolist()))
+    cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
+    color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
+    length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))
 
     def filter_data(df, cable_type=None, length=None, color=None):
         filtered_data = df.copy()

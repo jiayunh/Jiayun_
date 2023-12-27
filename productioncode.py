@@ -158,7 +158,7 @@ if file_content:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
-        date=group[-1]["Date"]
+        date=group.iloc[-1]["Date"]
 
         # Add data to the table
         result_table = {

@@ -71,10 +71,8 @@ if file_content:
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
     last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
-    # Round columns to specified decimals
-    rounding_dict = {'Mistake_rates': 3, 'People': 2, 'Total_time': 2, 'Time_per_person': 2}
-    last_7_days_data = last_7_days_data.round(rounding_dict)
-    
+    last_7_days_data['Mistake_rates'] = last_7_days_data['Mistake_rates'].apply(lambda x: round(x, 3))
+    last_7_days_data[['People', 'Total_time', 'Time_per_person']] = last_7_days_data[['People', 'Total_time', 'Time_per_person']].apply(lambda x: round(x, 2))
     st.write(last_7_days_data)
 
     # Warning Section

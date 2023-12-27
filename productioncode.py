@@ -71,8 +71,6 @@ if file_content:
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
     last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
-    last_7_days_data['Mistake_rates'] = last_7_days_data['Mistake_rates'].apply(lambda x: round(x, 3))
-    last_7_days_data[['People', 'Total_time', 'Time_per_person']] = last_7_days_data[['People', 'Total_time', 'Time_per_person']].apply(lambda x: round(x, 2))
     st.write(last_7_days_data)
 
     # Warning Section
@@ -114,6 +112,7 @@ if file_content:
              st.warning("Details of Rows with Abnormal Mistake Rates:")
              abnormal_rows_details = df[abnormal_rows]
              abnormal_rows_details['Date'] = abnormal_rows_details['Date'].dt.strftime('%Y-%m-%d')
+             abnormal_rows_details['Order_number'] = abnormal_rows_details['Order_number'].astype(int)
              st.write(abnormal_rows_details)
     else:
         st.success("No abnormal rows found in the dataset.")
@@ -130,6 +129,7 @@ if file_content:
     (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
     ]   
     filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
+    filtered_by_date_df['Order_number'] = filtered_by_date_df['Order_number'].astype(int)
     
     if st.sidebar.button("按日期过滤"):
     # Display the filtered DataFrame
@@ -159,6 +159,7 @@ if file_content:
     if st.sidebar.button("获取筛选数据结果"):
         filtered_df = filter_data(df, cable_type, length, color)
         filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
+        filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
         st.subheader("选取数据展示")
         st.write(filtered_df)
         
@@ -203,6 +204,7 @@ if file_content:
     # Convert the list of tables to a DataFrame
     result_df = pd.DataFrame(tables)
     result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
+    result_df['Order_number'] = result_df['Order_number'].astype(int)
    
 
    # Display the final DataFrame

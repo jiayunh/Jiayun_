@@ -125,6 +125,7 @@ if file_content:
     filtered_by_date_df = df[
     (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
     ]   
+    filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
     
     if st.sidebar.button("按日期过滤"):
     # Display the filtered DataFrame

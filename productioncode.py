@@ -162,7 +162,7 @@ if file_content:
 
         # Add data to the table
         result_table = {
-            "Date=date,
+            "Date":date,
             "Type": name[1],
             "Color": name[2],
             "Length": name[3],

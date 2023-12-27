@@ -125,6 +125,11 @@ if file_content:
     (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
     ]   
     
+    if st.sidebar.button("按日期过滤"):
+    # Display the filtered DataFrame
+    st.subheader"<h2 style='text-align: center;'>按日期过滤结果</h2>", unsafe_allow_html=True)
+    st.write(filtered_by_date_df)
+    
     
     # Filter Data Section 2
     st.sidebar.title("选择数据")
@@ -145,7 +150,7 @@ if file_content:
 
         return filtered_data
 
-    if st.sidebar.button("开始"):
+    if st.sidebar.button("获取筛选数据结果"):
         filtered_df = filter_data(df, cable_type, length, color)
         st.subheader("选取数据展示")
         st.write(filtered_df)

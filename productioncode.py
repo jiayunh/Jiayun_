@@ -68,6 +68,7 @@ if file_content:
 
     # Display data for the last 7 days
     st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
+    df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%Y-%m-%d')
     last_7_days_data = df[df['Date'] >= today_minus_7_days]
     st.write(last_7_days_data)
 

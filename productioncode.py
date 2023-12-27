@@ -127,7 +127,7 @@ if file_content:
     
     if st.sidebar.button("按日期过滤"):
     # Display the filtered DataFrame
-       st.subheader"<h2 style='text-align: center;'>按日期过滤结果</h2>", unsafe_allow_html=True)
+       st.subheader("按日期过滤结果")
        st.write(filtered_by_date_df)
     
     

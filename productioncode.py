@@ -188,8 +188,17 @@ if file_content:
        filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
 
        # Display the filtered DataFrame
-       st.markdown("<h1 style='text-align: center;'>展示结果</h2>", unsafe_allow_html=True)
+       st.markdown("<h1 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
        st.write(filtered_df)
+
+    # Add a filter button for 'Non storage' (does not contain 'storage')
+     if st.button("未装箱入库"):
+    # Filter and sort the DataFrame
+        non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+
+       # Display the filtered DataFrame
+       st.markdown("<h1 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
+       st.write(non_storage_df)
 
 else:
     st.error("Unable to load data from Google Drive.")

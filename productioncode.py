@@ -185,10 +185,10 @@ if file_content:
     # Add a filter button
     if st.button("已装箱入库"):
        # Filter and sort the DataFrame
-       filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Last_step')
+       filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
 
        # Display the filtered DataFrame
-       st.markdown("<h1 style='text-align: center;'>展示结果</h1>", unsafe_allow_html=True)
+       st.markdown("<h1 style='text-align: center;'>展示结果</h2>", unsafe_allow_html=True)
        st.write(filtered_df)
 
 else:

@@ -154,8 +154,10 @@ if file_content:
 
     if st.sidebar.button("获取筛选数据结果"):
         filtered_df = filter_data(df, cable_type, length, color)
+        filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
         st.subheader("选取数据展示")
         st.write(filtered_df)
+        
 
         if filtered_df.empty:
             st.info("No matching entries.")
@@ -196,6 +198,7 @@ if file_content:
 
     # Convert the list of tables to a DataFrame
     result_df = pd.DataFrame(tables)
+   
 
    # Display the final DataFrame
     st.markdown("<h1 style='text-align: center;'>总工时/每人</h1>", unsafe_allow_html=True)

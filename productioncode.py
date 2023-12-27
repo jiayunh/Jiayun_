@@ -113,9 +113,22 @@ if file_content:
     else:
         st.success("No abnormal rows found in the dataset.")
 
+    #Filter Data 1
+     st.sidebar.title("选取生产数据")
 
-    # Filter Data Section
-    st.sidebar.title("选取数据")
+    # Add a selectbox for month and year filtering
+    selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
+    selected_year = st.sidebar.selectbox("选择年份", range(2023, 2024))
+
+    #Filter the DataFrame based on selected month and year
+    filtered_by_date_df = result_df[
+        (result_df['Date'].dt.month == selected_month) & (result_df['Date'].dt.year == selected_year)
+    ]
+    
+    
+
+    # Filter Data Section 2
+    st.sidebar.title("选择数据")
     cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
     color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
     length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))

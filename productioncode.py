@@ -122,8 +122,8 @@ if file_content:
 
     #Filter the DataFrame based on selected month and year
     filtered_by_date_df = result_df[
-        (result_df['Date'].dt.month == selected_month) & (result_df['Date'].dt.year == selected_year)
-    ]
+    (result_df['Date'].dt.month == int(selected_month)) & (result_df['Date'].dt.year == int(selected_year))
+    ]   
     
     
     # Filter Data Section 2

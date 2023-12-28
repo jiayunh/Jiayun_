@@ -175,54 +175,32 @@ if file_content:
     df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
 
     # Group by Type, Color, and Length
-    grouped_df = df.groupby(["Type", "Color", "Length", "Order_number"])
-
-    # Replace None with a placeholder value (e.g., np.nan)
-    df["Manufacture_number"].fillna(np.nan, inplace=True)
+    grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
 
     # Store the results in a list of tables
     tables = []
 
     # Display the results
-    for name, group in grouped_df:
+    for name, group in result_df:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
         
         # Add data to the table for rows with NaN Manufacture_number
-        result_table_nan = {
+        result_table = {
         "Date": date,
         "Type": name[0],
         "Color": name[1],
         "Length": name[2],
         "Order_number": name[3],
-        "Manufacture_number": None,
+        "Manufacture_number": name[4],
         "Total_time_per_person": total_time_per_person,
         "Total_production_time": total_production_time,
         "Last_step": last_step
         }
         # Append the result table to the list
-        tables.append(result_table_nan)
-
-        # Iterate over rows with exact Manufacture_number
-        for _, row in group.iterrows():
-            manufacture_number = row["Manufacture_number"]
-            # Add data to the table for rows with exact Manufacture_number
-            result_table = {
-               "Date": date,
-               "Type": name[0],
-               "Color": name[1],
-               "Length": name[2],
-               "Order_number": name[3],
-               "Manufacture_number": manufacture_number,
-               "Total_time_per_person": row["Time_per_person"],
-               "Total_production_time": row["Total_time"],
-               "Last_step": row["End_Steps"]
-           }
-
-            # Append the result table to the list
-            tables.append(result_table)
+        tables.append(result_table)
 
 
     # Convert the list of tables to a DataFrame

@@ -167,6 +167,7 @@ if file_content:
         if filtered_df.empty:
             st.info("No matching entries.")
 
+
     # Results Section
 
     # Convert "Total_time" and "Time_per_person" to numeric

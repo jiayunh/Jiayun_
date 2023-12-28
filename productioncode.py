@@ -173,8 +173,11 @@ if file_content:
     df["Time_per_person"] = pd.to_numeric(df["Time_per_person"], errors="coerce")
     df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
 
+    # Replace None with a placeholder value (e.g., np.nan)
+    df["Manufacture_number"].fillna(np.nan, inplace=True)
+
     # Group by Type, Color, and Length
-    grouped_df = df.groupby(["Type", "Color", "Length","Order_number"])
+    grouped_df = df.groupby(["Type", "Color", "Length", "Order_number", "Manufacture_number"])
 
     # Store the results in a list of tables
     tables = []
@@ -185,7 +188,6 @@ if file_content:
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
-        manufacture_number = group.iloc[-1]["Manufacture_number"] if "Manufacture_number" in group.columns else None
 
         # Add data to the table
         result_table = {
@@ -194,7 +196,7 @@ if file_content:
             "Color": name[1],
             "Length": name[2],
             "Order_number": name[3],
-            "Manufacture_number": manufacture_number,
+            "Manufacture_number": name[4],
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

@@ -189,6 +189,9 @@ if file_content:
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
 
+    # Replace the placeholder value with None in the result table
+        manufacture_number = None if pd.isna(name[4]) else name[4]
+
         # Add data to the table
         result_table = {
             "Date":date,
@@ -196,7 +199,7 @@ if file_content:
             "Color": name[1],
             "Length": name[2],
             "Order_number": name[3],
-            "Manufacture_number": name[4],
+            "Manufacture_number": manufacture_number,
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

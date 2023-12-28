@@ -174,7 +174,7 @@ if file_content:
     df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
 
     # Group by Type, Color, and Length
-    grouped_df = df.groupby(["Type", "Color", "Length","Order_number","Manufacture_number"])
+    grouped_df = df.groupby(["Type", "Color", "Length","Order_number"])
 
     # Store the results in a list of tables
     tables = []

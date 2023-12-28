@@ -185,6 +185,7 @@ if file_content:
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
+        manufacture_number = group.iloc[-1]["Manufacture_number"] if "Manufacture_number" in group.columns else None
 
         # Add data to the table
         result_table = {
@@ -193,6 +194,7 @@ if file_content:
             "Color": name[1],
             "Length": name[2],
             "Order_number": name[3],
+            "Manufacture_number": manufacture_number,
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

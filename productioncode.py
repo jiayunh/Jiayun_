@@ -186,20 +186,18 @@ if file_content:
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
-
-        # Iterate over unique Manufacture_numbers
-        for manufacture_number in manufacture_numbers:
-           # Add data to the table
-           result_table = {
-               "Date":date,
-               "Type": name[0],
-               "Color": name[1],
-               "Length": name[2],
-               "Order_number": name[3],
-               "Total_time_per_person": total_time_per_person,
-               "Total_production_time": total_production_time,
-               "Last_step": last_step
-           }
+        
+        # Add data to the table
+        result_table = {
+            "Date":date,
+            "Type": name[0],
+            "Color": name[1],
+            "Length": name[2],
+            "Order_number": name[3],
+            "Total_time_per_person": total_time_per_person,
+            "Total_production_time": total_production_time,
+            "Last_step": last_step
+        }
 
         # Append the result table to the list
         tables.append(result_table)

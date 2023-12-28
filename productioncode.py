@@ -181,7 +181,7 @@ if file_content:
     tables = []
 
     # Display the results
-    for name, group in result_df:
+    for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         last_step = group.iloc[-1]["End_Steps"]

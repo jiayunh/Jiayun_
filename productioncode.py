@@ -208,7 +208,7 @@ if file_content:
    
 
    # Display the final DataFrame
-    st.markdown("<h1 style='text-align: center;'>总工时/每人</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
     st.write(result_df)   
 
     # Add a filter button

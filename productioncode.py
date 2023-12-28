@@ -193,7 +193,7 @@ if file_content:
             "Color": name[1],
             "Length": name[2],
             "Order_number": name[3],
-            "Manufacture_number": name[4],
+            "Manufacture_number": Manufacture_number
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

@@ -139,13 +139,15 @@ if file_content:
     
     # Filter Data Section 2
     st.sidebar.title("选择跳线数据")
+    manufacture_number= st.sidebar.selectbox("选择制令单号", [''] + sorted(df['Manufacture_number'].unique().tolist()))
     cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
     color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
     length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))
 
-    def filter_data(df, cable_type=None, length=None, color=None):
+    def filter_data(df, manufacture_number=None, cable_type=None, length=None, color=None):
         filtered_data = df.copy()
-
+        if manufacture_number:
+            filtered_data = filtered_data[filtered_data['Manufacture_number'] ==manufacture_number]
         if cable_type:
             filtered_data = filtered_data[filtered_data['Type'] == cable_type]
         if length:
@@ -157,7 +159,7 @@ if file_content:
         return filtered_data
 
     if st.sidebar.button("获取筛选数据结果"):
-        filtered_df = filter_data(df, cable_type, length, color)
+        filtered_df = filter_data(df, manufacture_number, cable_type, length, color)
         filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
         filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
         st.subheader(f"{cable_type}, {length}, {color} 筛选数据展示")

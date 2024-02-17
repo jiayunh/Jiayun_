@@ -119,6 +119,14 @@ if file_content:
         st.subheader("年度不良率统计")
         yearly_abnormal_table = pd.DataFrame(yearly_abnormal_counts)
         st.table(yearly_abnormal_table)
+        # Display the total count as a clickable link to show details
+        st.write(f"总计: [{yearly_abnormal_table['Total Abnormal'].sum()}](#{'年度不良率统计详情'})")
+
+        # Anchor for linking to the details section
+        st.markdown("<a name='年度不良率统计详情'></a>", unsafe_allow_html=True)
+
+        # Display yearly abnormal counts in a table
+        st.table(yearly_abnormal_table)
         
         # Display monthly abnormal counts for each year
         st.subheader("月度不良率统计")

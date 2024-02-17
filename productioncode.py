@@ -126,14 +126,15 @@ if file_content:
             st.subheader(f"{year} 年")
             monthly_abnormal_table_year = pd.DataFrame([entry["Total Abnormal"] for entry in monthly_abnormal_counts if entry["Year"] == year], columns=["Total Abnormal"])
             st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
-
-       # Add number labels to each bar
-        chart_data = monthly_abnormal_table_year.values.flatten()
-        for i, val in enumerate(chart_data):
-           st.write(val)
-           st.text(f"val: {val}")
-           chart.bar_chart.data.labels[i] = str(val)
-
+        
+         # Detailed abnormal rates categorized by ranges (0.1 intervals)
+         st.subheader("详细不良率统计")
+        for i in range(2, 10):
+            lower_bound = i / 10
+            upper_bound = (i + 1) / 10
+            range_df = filtered_df[(filtered_df['Mistake_rates'] >= lower_bound) & (filtered_df['Mistake_rates'] < upper_bound)]
+            st.write(f"不良率范围: {lower_bound} - {upper_bound}")
+            st.write(range_df)
 
     # Third Tab: Data Filtering
     elif tab_selection == "生产日期筛选":

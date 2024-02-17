@@ -127,6 +127,13 @@ if file_content:
             monthly_abnormal_table_year = pd.DataFrame([entry["Total Abnormal"] for entry in monthly_abnormal_counts if entry["Year"] == year], columns=["Total Abnormal"])
             st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
 
+       # Add number labels to each bar
+        chart_data = monthly_abnormal_table_year.values.flatten()
+        for i, val in enumerate(chart_data):
+           st.write(val)
+           st.text(f"val: {val}")
+           chart.bar_chart.labels[i] = str(val)
+
 
 
     # Third Tab: Data Filtering

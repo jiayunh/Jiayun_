@@ -93,48 +93,33 @@ if file_content:
     result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
     result_df['Order_number'] = result_df['Order_number'].astype(int)
 
-    # Second Tab: Abnormal Rates Details
+    
     if tab_selection == "不良率详情":
+        # Sidebar widget to select the year and month
+        selected_year = st.sidebar.selectbox("选择年份", [2023, 2024])
+        selected_month = st.sidebar.selectbox("选择月份", range(1, 13))
+
+        # Filter the DataFrame based on the selected year and month
+        filtered_df = df[(df['Date'].dt.year == selected_year) & (df['Date'].dt.month == selected_month)]
+
         # Warning Section
         st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
         # Convert 'Mistake_rates' column to numeric, handling errors with coerce
-        df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
+        filtered_df['Mistake_rates'] = pd.to_numeric(filtered_df['Mistake_rates'], errors='coerce')
 
-        # Group by year and month to calculate yearly and monthly abnormal counts
-        yearly_abnormal_counts = []
-        monthly_abnormal_counts = []
+        st.subheader(f"{selected_year} 年 {selected_month} 月的详细不良率统计")
 
-        for year in [2023, 2024]:
-            for month in range(1, 13):
-                filtered_df = df[(df['Date'].dt.year == year) & (df['Date'].dt.month == month)]
-                abnormal_rows = filtered_df['Mistake_rates'].ge(0.02) & ~filtered_df['Mistake_rates'].isna()
-                total_abnormal_monthly = abnormal_rows.sum()
-                monthly_abnormal_counts.append({"Year": year, "Month": month, "Total Abnormal": total_abnormal_monthly})
-        
-            # Calculate yearly total abnormal counts
-            total_abnormal_yearly = sum(monthly_abnormal_count["Total Abnormal"] for monthly_abnormal_count in monthly_abnormal_counts if monthly_abnormal_count["Year"] == year)
-            yearly_abnormal_counts.append({"Year": year, "Total Abnormal": total_abnormal_yearly})
+        # Define the threshold for abnormal rates
+        threshold = st.sidebar.slider("设置阈值:", 0.0, 0.1, 0.02, 0.01)
 
-        # Display yearly total abnormal counts
-        st.subheader("年度不良率统计")
-        yearly_abnormal_table = pd.DataFrame(yearly_abnormal_counts)
-        st.table(yearly_abnormal_table)
-        
-        # Display monthly abnormal counts for each year
-        st.subheader("月度不良率统计")
-        for year in [2023, 2024]:
-            st.subheader(f"{year} 年")
-            monthly_abnormal_table_year = pd.DataFrame([entry["Total Abnormal"] for entry in monthly_abnormal_counts if entry["Year"] == year], columns=["Total Abnormal"])
-            st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
-        
-         # Detailed abnormal rates categorized by ranges (0.1 intervals)
-        st.subheader("详细不良率统计")
-        for i in range(2, 10):
-            lower_bound = i / 10
-            upper_bound = (i + 1) / 10
+        # Display detailed abnormal rates categorized by ranges (0.01 intervals) larger than the threshold
+        for i in range(int(threshold * 100), 10):
+            lower_bound = i / 100
+            upper_bound = (i + 1) / 100
             range_df = filtered_df[(filtered_df['Mistake_rates'] >= lower_bound) & (filtered_df['Mistake_rates'] < upper_bound)]
-            st.write(f"不良率范围: {lower_bound} - {upper_bound}")
-            st.write(range_df)
+            if not range_df.empty:
+                st.write(f"不良率范围: {lower_bound} - {upper_bound}")
+                st.write(range_df)
 
     # Third Tab: Data Filtering
     elif tab_selection == "生产日期筛选":

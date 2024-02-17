@@ -52,8 +52,8 @@ if file_content:
 
     # Display data in Streamlit app    
     st.markdown(
-    """<h1 style='text-align: center; color: royalblue;'>跳线生产分析</h1>""",
-    unsafe_allow_html=True
+        """<h1 style='text-align: center; color: royalblue;'>跳线生产分析</h1>""",
+        unsafe_allow_html=True
     )
 
     # Calculate the date seven days ago
@@ -78,15 +78,15 @@ if file_content:
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
         result_table = {
-        "Date": date,    
-        "Type": name[0],
-        "Color": name[1],
-        "Length": name[2],
-        "Order_number": name[3],
-        "Manufacture_number": name[4],
-        "Total_time_per_person": total_time_per_person,
-        "Total_production_time": total_production_time,
-        "Last_step": last_step
+            "Date": date,    
+            "Type": name[0],
+            "Color": name[1],
+            "Length": name[2],
+            "Order_number": name[3],
+            "Manufacture_number": name[4],
+            "Total_time_per_person": total_time_per_person,
+            "Total_production_time": total_production_time,
+            "Last_step": last_step
         }
         tables.append(result_table)
     result_df = pd.DataFrame(tables)
@@ -99,44 +99,71 @@ if file_content:
         st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
         # Convert 'Mistake_rates' column to numeric, handling errors with coerce
         df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
+
+        # Sidebar widget to select the month
+        selected_month = st.sidebar.slider("选择月份", 1, 12, 1)
+
+        # Filter the DataFrame based on the selected month
+        filtered_df = df[df['Date'].dt.month == selected_month]
+
         # Identify abnormal rows based on mistake rates
-        abnormal_rows = df['Mistake_rates'].ge(0.02) & ~df['Mistake_rates'].isna()
+        abnormal_rows = filtered_df['Mistake_rates'].ge(0.02) & ~filtered_df['Mistake_rates'].isna()
+
         # Count the number of abnormal rows for each threshold
         abnormal_counts = []
         for threshold in np.arange(0.02, 0.10, 0.01):
-            count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.01)].sum()
+            count = abnormal_rows[(filtered_df['Mistake_rates'] >= threshold) & (filtered_df['Mistake_rates'] < threshold + 0.01)].sum()
             abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
+
         # Count of Rows with Mistake Rates >= 0.10
-        count_high_mistake_rates = abnormal_rows[df['Mistake_rates'] >= 0.10].sum()
+        count_high_mistake_rates = abnormal_rows[filtered_df['Mistake_rates'] >= 0.10].sum()
         abnormal_counts.append({"Threshold": ">= 0.10", "Count": count_high_mistake_rates})
+
         # Function to calculate the total of abnormal (mistakes >=0.020)
         total_abnormal = abnormal_rows.sum()
         abnormal_counts.append({"Threshold": "Total Abnormal", "Count":total_abnormal})
-        # Display the results in an organized table
-        st.subheader("不良率统计")
-        abnormal_table = pd.DataFrame(abnormal_counts)
-        st.table(abnormal_table)
+
+        # Display the total chart
+        st.subheader("总的不良率统计")
+        total_abnormal_table = pd.DataFrame(abnormal_counts)
+        st.table(total_abnormal_table)
+
         # Display details if there are abnormal rows
         if abnormal_rows.any():
             # Toggle button to show/hide details
-            details_button = st.button("点击查看详情")
+            details_button = st.button("点击查看总的不良率详情")
             if details_button:
                 st.warning("Details of Rows with Abnormal Mistake Rates:")
-                abnormal_rows_details = df[abnormal_rows]
+                abnormal_rows_details = filtered_df[abnormal_rows]
                 abnormal_rows_details['Date'] = abnormal_rows_details['Date'].dt.strftime('%Y-%m-%d')
                 abnormal_rows_details['Order_number'] = abnormal_rows_details['Order_number'].astype(int)
                 st.write(abnormal_rows_details)
         else:
             st.success("No abnormal rows found in the dataset.")
 
+        # Monthly chart
+        st.subheader("月度不良率统计")
+
+        # Group by month and calculate abnormal counts for each month
+        monthly_abnormal_counts = []
+        for month in range(1, 13):
+            month_filtered_df = df[df['Date'].dt.month == month]
+            abnormal_rows_monthly = month_filtered_df['Mistake_rates'].ge(0.02) & ~month_filtered_df['Mistake_rates'].isna()
+            total_abnormal_monthly = abnormal_rows_monthly.sum()
+            monthly_abnormal_counts.append({"Month": month, "Total Abnormal": total_abnormal_monthly})
+
+        # Display the monthly chart
+        monthly_abnormal_table = pd.DataFrame(monthly_abnormal_counts)
+        st.bar_chart(monthly_abnormal_table.set_index('Month'))
+
     # Third Tab: Data Filtering
     elif tab_selection == "生产日期筛选":
-        #Filter Data 1
+        # Filter Data 1
         st.sidebar.title("选取生产数据")
         # Add a selectbox for month and year filtering
         selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
         selected_year = st.sidebar.selectbox("选择年份", range(2023, 2025))
-        #Filter the DataFrame based on selected month and year
+        # Filter the DataFrame based on selected month and year
         filtered_by_date_df = df[
             (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
         ]   
@@ -146,7 +173,7 @@ if file_content:
             # Display the filtered DataFrame
             st.subheader("按日期过滤结果")
             st.write(filtered_by_date_df)
-            
+
     elif tab_selection == "生产种类筛选":
         # Filter Data Section 2
         st.sidebar.title("选择跳线数据")
@@ -180,21 +207,20 @@ if file_content:
 
     # Fourth Tab: Production Details
     elif tab_selection == "入库详情":
-       # Create a dropdown menu for selecting "已入库" or "未入库"
-       selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
+        # Create a dropdown menu for selecting "已入库" or "未入库"
+        selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
 
-       # Filter and sort the DataFrame based on the selected option
-       if selected_option == "已入库":
-           filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-           # Display the filtered DataFrame for '已入库'
-           st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
-           st.write(filtered_df)
-       elif selected_option == "未入库":
-           non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-           # Display the filtered DataFrame for '未入库'
-           st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
-           st.write(non_storage_df)
-
+        # Filter and sort the DataFrame based on the selected option
+        if selected_option == "已入库":
+            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            # Display the filtered DataFrame for '已入库'
+            st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
+            st.write(filtered_df)
+        elif selected_option == "未入库":
+            non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            # Display the filtered DataFrame for '未入库'
+            st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
+            st.write(non_storage_df)
 
 else:
     st.error("Unable to load data from Google Drive.")
@@ -202,4 +228,3 @@ else:
 # Reset pandas options to their default values after displaying the DataFrames
 pd.reset_option('display.max_columns')
 pd.reset_option('display.max_colwidth')
-

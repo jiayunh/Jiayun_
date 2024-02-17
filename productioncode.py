@@ -67,7 +67,7 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["入库详情","过去一周生产数据", "生产日期筛选","不良率详情","生产种类筛选","生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["入库详情", "生产日期筛选","不良率详情","生产种类筛选","生产工时详情"])
 
     # Define result_df
     grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
@@ -92,15 +92,6 @@ if file_content:
     result_df = pd.DataFrame(tables)
     result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
     result_df['Order_number'] = result_df['Order_number'].astype(int)
-
-    # First Tab: Last 7 Days Data
-    if tab_selection == "过去一周生产数据":
-        # Display data for the last 7 days
-        st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
-        last_7_days_data = df[df['Date'] >= today_minus_7_days]
-        last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
-        last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
-        st.write(last_7_days_data)
 
     # Second Tab: Abnormal Rates Details
     elif tab_selection == "不良率详情":

@@ -79,11 +79,11 @@ if file_content:
         date=group.iloc[-1]["Date"]
         result_table = {
         "Date": date,
-        "Type": name[0],
-        "Color": name[1],
-        "Length": name[2],
-        "Order_number": name[3],
-        "Manufacture_number": name[4],
+        "Manufacture_number": name[0],    
+        "Type": name[1],
+        "Color": name[2],
+        "Length": name[3],
+        "Order_number": name[4],
         "Total_time_per_person": total_time_per_person,
         "Total_production_time": total_production_time,
         "Last_step": last_step

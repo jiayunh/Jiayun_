@@ -96,7 +96,7 @@ if file_content:
     
     if tab_selection == "不良率详情":
          # Warning Section
-        st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>总不良率</h1>", unsafe_allow_html=True)
         # Convert 'Mistake_rates' column to numeric, handling errors with coerce
         df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
 

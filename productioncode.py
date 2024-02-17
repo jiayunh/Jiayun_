@@ -132,7 +132,7 @@ if file_content:
             st.subheader("按日期过滤结果")
             st.write(filtered_by_date_df)
             
-     elif tab_selection == "生产种类筛选":
+    elif tab_selection == "生产种类筛选":
         # Filter Data Section 2
         st.sidebar.title("选择跳线数据")
         manufacture_number= st.sidebar.selectbox("选择制令单号", [''] + sorted(df['Manufacture_number'].unique().tolist()))

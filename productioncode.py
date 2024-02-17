@@ -95,6 +95,38 @@ if file_content:
 
     
     if tab_selection == "不良率详情":
+         # Warning Section
+        st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
+        # Convert 'Mistake_rates' column to numeric, handling errors with coerce
+        df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
+
+        # Group by year and month to calculate yearly and monthly abnormal counts
+        yearly_abnormal_counts = []
+        monthly_abnormal_counts = []
+
+        for year in [2023, 2024]:
+            for month in range(1, 13):
+                filtered_df = df[(df['Date'].dt.year == year) & (df['Date'].dt.month == month)]
+                abnormal_rows = filtered_df['Mistake_rates'].ge(0.02) & ~filtered_df['Mistake_rates'].isna()
+                total_abnormal_monthly = abnormal_rows.sum()
+                monthly_abnormal_counts.append({"Year": year, "Month": month, "Total Abnormal": total_abnormal_monthly})
+        
+            # Calculate yearly total abnormal counts
+            total_abnormal_yearly = sum(monthly_abnormal_count["Total Abnormal"] for monthly_abnormal_count in monthly_abnormal_counts if monthly_abnormal_count["Year"] == year)
+            yearly_abnormal_counts.append({"Year": year, "Total Abnormal": total_abnormal_yearly})
+
+        # Display yearly total abnormal counts
+        st.subheader("年度不良率统计")
+        yearly_abnormal_table = pd.DataFrame(yearly_abnormal_counts)
+        st.table(yearly_abnormal_table)
+        
+        # Display monthly abnormal counts for each year
+        st.subheader("月度不良率统计")
+        for year in [2023, 2024]:
+            st.subheader(f"{year} 年")
+            monthly_abnormal_table_year = pd.DataFrame([entry["Total Abnormal"] for entry in monthly_abnormal_counts if entry["Year"] == year], columns=["Total Abnormal"])
+            st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
+
         # Sidebar widget to select the year and month
         selected_year = st.sidebar.selectbox("选择年份", [2023, 2024])
         selected_month = st.sidebar.selectbox("选择月份", range(1, 13))

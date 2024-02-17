@@ -168,8 +168,7 @@ if file_content:
         ]   
         filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
         filtered_by_date_df['Order_number'] = filtered_by_date_df['Order_number'].astype(int)
-        filtered_by_date_df = filtered_by_date_df.dropna(axis=1, how='all')
-        filtered_by_date_df = filtered_by_date_df.dropna(axis=1, how='all')
+        filtered_by_date_df = filtered_by_date_df.loc[:, ~filtered_by_date_df.columns.str.startswith('Unnamed')]
         if st.sidebar.button("按日期过滤"):
             # Display the filtered DataFrame
             st.subheader("按日期过滤结果")

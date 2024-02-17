@@ -128,7 +128,7 @@ if file_content:
             st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
         
          # Detailed abnormal rates categorized by ranges (0.1 intervals)
-         st.subheader("详细不良率统计")
+        st.subheader("详细不良率统计")
         for i in range(2, 10):
             lower_bound = i / 10
             upper_bound = (i + 1) / 10

@@ -218,6 +218,8 @@ if file_content:
             # Display the filtered DataFrame for '未入库'
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
             st.write(non_storage_df)
+    elif tab_selection == "生产工时详情":
+        st.write(result_df)
 
 else:
     st.error("Unable to load data from Google Drive.")

@@ -168,6 +168,7 @@ if file_content:
         ]   
         filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
         filtered_by_date_df['Order_number'] = filtered_by_date_df['Order_number'].astype(int)
+        filtered_by_date_df = filtered_by_date_df.dropna(axis=1, how='all')
         if st.sidebar.button("按日期过滤"):
             # Display the filtered DataFrame
             st.subheader("按日期过滤结果")
@@ -199,6 +200,7 @@ if file_content:
             filtered_df = filter_data(df, manufacture_number, cable_type, length, color)
             filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
             filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
+            filtered_df = filtered_by_date_df.dropna(axis=1, how='all')
             st.subheader(f"{cable_type}, {length}, {color} 筛选数据展示")
             st.write(filtered_df)
             if filtered_df.empty:

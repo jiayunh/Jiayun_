@@ -94,7 +94,7 @@ if file_content:
     result_df['Order_number'] = result_df['Order_number'].astype(int)
 
     # Second Tab: Abnormal Rates Details
-    elif tab_selection == "不良率详情":
+    if tab_selection == "不良率详情":
         # Warning Section
         st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
         # Convert 'Mistake_rates' column to numeric, handling errors with coerce

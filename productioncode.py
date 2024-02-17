@@ -67,7 +67,31 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["已装箱入库", "未装箱入库","过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
+
+    # Define result_df
+    grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
+    tables = []
+    for name, group in grouped_df:
+        total_time_per_person = group["Time_per_person"].sum()
+        total_production_time=group["Total_time"].sum()
+        last_step = group.iloc[-1]["End_Steps"]
+        date=group.iloc[-1]["Date"]
+        result_table = {
+        "Date": date,
+        "Type": name[0],
+        "Color": name[1],
+        "Length": name[2],
+        "Order_number": name[3],
+        "Manufacture_number": name[4],
+        "Total_time_per_person": total_time_per_person,
+        "Total_production_time": total_production_time,
+        "Last_step": last_step
+        }
+        tables.append(result_table)
+    result_df = pd.DataFrame(tables)
+    result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
+    result_df['Order_number'] = result_df['Order_number'].astype(int)
 
     # First Tab: Last 7 Days Data
     if tab_selection == "过去一周生产数据":
@@ -165,38 +189,6 @@ if file_content:
 
     # Fourth Tab: Production Details
     elif tab_selection == "生产工时详情":
-        # Results Section
-        # Convert "Total_time" and "Time_per_person" to numeric
-        df["Time_per_person"] = pd.to_numeric(df["Time_per_person"], errors="coerce")
-        df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
-        # Group by Type, Color, and Length
-        grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
-        # Store the results in a list of tables
-        tables = []
-        # Display the results
-        for name, group in grouped_df:
-            total_time_per_person = group["Time_per_person"].sum()
-            total_production_time=group["Total_time"].sum()
-            last_step = group.iloc[-1]["End_Steps"]
-            date=group.iloc[-1]["Date"]
-            # Add data to the table for rows with NaN Manufacture_number
-            result_table = {
-            "Date": date,
-            "Type": name[0],
-            "Color": name[1],
-            "Length": name[2],
-            "Order_number": name[3],
-            "Manufacture_number": name[4],
-            "Total_time_per_person": total_time_per_person,
-            "Total_production_time": total_production_time,
-            "Last_step": last_step
-            }
-            # Append the result table to the list
-            tables.append(result_table)
-        # Convert the list of tables to a DataFrame
-        result_df = pd.DataFrame(tables)
-        result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
-        result_df['Order_number'] = result_df['Order_number'].astype(int)
         # Display the final DataFrame
         st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
         st.write(result_df)
@@ -223,3 +215,4 @@ else:
 # Reset pandas options to their default values after displaying the DataFrames
 pd.reset_option('display.max_columns')
 pd.reset_option('display.max_colwidth')
+

@@ -66,153 +66,153 @@ if file_content:
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_colwidth', None)
 
-    # Put everything inside tabs
-    with st.tabs(label="Tabs", start_sidebar=False):
-        
-        # First Tab: Last 7 Days Data
-        with st.tab(label="过去一周数据"):
-            # Display data for the last 7 days
-            st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
-            last_7_days_data = df[df['Date'] >= today_minus_7_days]
-            last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
-            last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
-            st.write(last_7_days_data)
+    # Create tabs using st.radio()
+    tab_selection = st.radio("选择选项卡", ["过去一周数据", "不良率详情", "数据筛选", "生产工时详情"])
 
-        # Second Tab: Abnormal Rates Details
-        with st.tab(label="不良率详情"):
-            # Warning Section
-            st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
-            # Convert 'Mistake_rates' column to numeric, handling errors with coerce
-            df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
-            # Identify abnormal rows based on mistake rates
-            abnormal_rows = df['Mistake_rates'].ge(0.02) & ~df['Mistake_rates'].isna()
-            # Count the number of abnormal rows for each threshold
-            abnormal_counts = []
-            for threshold in np.arange(0.02, 0.10, 0.01):
-                count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.01)].sum()
-                abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
-            # Count of Rows with Mistake Rates >= 0.10
-            count_high_mistake_rates = abnormal_rows[df['Mistake_rates'] >= 0.10].sum()
-            abnormal_counts.append({"Threshold": ">= 0.10", "Count": count_high_mistake_rates})
-            # Function to calculate the total of abnormal (mistakes >=0.020)
-            total_abnormal = abnormal_rows.sum()
-            abnormal_counts.append({"Threshold": "Total Abnormal", "Count":total_abnormal})
-            # Display the results in an organized table
-            st.subheader("不良率统计")
-            abnormal_table = pd.DataFrame(abnormal_counts)
-            st.table(abnormal_table)
-            # Display details if there are abnormal rows
-            if abnormal_rows.any():
-                # Toggle button to show/hide details
-                details_button = st.button("点击查看详情")
-                if details_button:
-                    st.warning("Details of Rows with Abnormal Mistake Rates:")
-                    abnormal_rows_details = df[abnormal_rows]
-                    abnormal_rows_details['Date'] = abnormal_rows_details['Date'].dt.strftime('%Y-%m-%d')
-                    abnormal_rows_details['Order_number'] = abnormal_rows_details['Order_number'].astype(int)
-                    st.write(abnormal_rows_details)
-            else:
-                st.success("No abnormal rows found in the dataset.")
+    # First Tab: Last 7 Days Data
+    if tab_selection == "过去一周数据":
+        # Display data for the last 7 days
+        st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
+        last_7_days_data = df[df['Date'] >= today_minus_7_days]
+        last_7_days_data['Date'] = last_7_days_data['Date'].dt.strftime('%Y-%m-%d')
+        last_7_days_data['Order_number'] = last_7_days_data['Order_number'].astype(int)
+        st.write(last_7_days_data)
 
-        # Third Tab: Data Filtering
-        with st.tab(label="数据筛选"):
-            #Filter Data 1
-            st.sidebar.title("选取生产数据")
-            # Add a selectbox for month and year filtering
-            selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
-            selected_year = st.sidebar.selectbox("选择年份", range(2023, 2025))
-            #Filter the DataFrame based on selected month and year
-            filtered_by_date_df = df[
-                (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
-            ]   
-            filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
-            filtered_by_date_df['Order_number'] = filtered_by_date_df['Order_number'].astype(int)
-            if st.sidebar.button("按日期过滤"):
-                # Display the filtered DataFrame
-                st.subheader("按日期过滤结果")
-                st.write(filtered_by_date_df)
+    # Second Tab: Abnormal Rates Details
+    elif tab_selection == "不良率详情":
+        # Warning Section
+        st.markdown("<h1 style='text-align: center;'>不良率详情</h1>", unsafe_allow_html=True)
+        # Convert 'Mistake_rates' column to numeric, handling errors with coerce
+        df['Mistake_rates'] = pd.to_numeric(df['Mistake_rates'], errors='coerce')
+        # Identify abnormal rows based on mistake rates
+        abnormal_rows = df['Mistake_rates'].ge(0.02) & ~df['Mistake_rates'].isna()
+        # Count the number of abnormal rows for each threshold
+        abnormal_counts = []
+        for threshold in np.arange(0.02, 0.10, 0.01):
+            count = abnormal_rows[(df['Mistake_rates'] >= threshold) & (df['Mistake_rates'] < threshold + 0.01)].sum()
+            abnormal_counts.append({"Threshold": f"{threshold:.2f} - {threshold + 0.01:.2f}", "Count": count})
+        # Count of Rows with Mistake Rates >= 0.10
+        count_high_mistake_rates = abnormal_rows[df['Mistake_rates'] >= 0.10].sum()
+        abnormal_counts.append({"Threshold": ">= 0.10", "Count": count_high_mistake_rates})
+        # Function to calculate the total of abnormal (mistakes >=0.020)
+        total_abnormal = abnormal_rows.sum()
+        abnormal_counts.append({"Threshold": "Total Abnormal", "Count":total_abnormal})
+        # Display the results in an organized table
+        st.subheader("不良率统计")
+        abnormal_table = pd.DataFrame(abnormal_counts)
+        st.table(abnormal_table)
+        # Display details if there are abnormal rows
+        if abnormal_rows.any():
+            # Toggle button to show/hide details
+            details_button = st.button("点击查看详情")
+            if details_button:
+                st.warning("Details of Rows with Abnormal Mistake Rates:")
+                abnormal_rows_details = df[abnormal_rows]
+                abnormal_rows_details['Date'] = abnormal_rows_details['Date'].dt.strftime('%Y-%m-%d')
+                abnormal_rows_details['Order_number'] = abnormal_rows_details['Order_number'].astype(int)
+                st.write(abnormal_rows_details)
+        else:
+            st.success("No abnormal rows found in the dataset.")
 
-            # Filter Data Section 2
-            st.sidebar.title("选择跳线数据")
-            manufacture_number= st.sidebar.selectbox("选择制令单号", [''] + sorted(df['Manufacture_number'].unique().tolist()))
-            cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
-            color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
-            length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))
+    # Third Tab: Data Filtering
+    elif tab_selection == "数据筛选":
+        #Filter Data 1
+        st.sidebar.title("选取生产数据")
+        # Add a selectbox for month and year filtering
+        selected_month = st.sidebar.selectbox("选择月份", range(1, 13), format_func=lambda x: f"{x:02d}")  # Format month with leading zero
+        selected_year = st.sidebar.selectbox("选择年份", range(2023, 2025))
+        #Filter the DataFrame based on selected month and year
+        filtered_by_date_df = df[
+            (df['Date'].dt.month == int(selected_month)) & (df['Date'].dt.year == int(selected_year))
+        ]   
+        filtered_by_date_df['Date'] = filtered_by_date_df['Date'].dt.strftime('%Y-%m-%d')
+        filtered_by_date_df['Order_number'] = filtered_by_date_df['Order_number'].astype(int)
+        if st.sidebar.button("按日期过滤"):
+            # Display the filtered DataFrame
+            st.subheader("按日期过滤结果")
+            st.write(filtered_by_date_df)
 
-            def filter_data(df, manufacture_number=None, cable_type=None, length=None, color=None):
-                filtered_data = df.copy()
-                if manufacture_number:
-                    filtered_data = filtered_data[filtered_data['Manufacture_number'] ==manufacture_number]
-                if cable_type:
-                    filtered_data = filtered_data[filtered_data['Type'] == cable_type]
-                if length:
-                    filtered_data = filtered_data[filtered_data['Length'].astype(str) == length]
-                if color:
-                    color = color.lower()  # Convert user input to lowercase
-                    filtered_data = filtered_data[filtered_data['Color'].astype(str).str.lower() == color]
+        # Filter Data Section 2
+        st.sidebar.title("选择跳线数据")
+        manufacture_number= st.sidebar.selectbox("选择制令单号", [''] + sorted(df['Manufacture_number'].unique().tolist()))
+        cable_type = st.sidebar.selectbox("选择跳线种类", [''] + sorted(df['Type'].unique().tolist()))
+        color = st.sidebar.selectbox("选择颜色", [''] + sorted(df['Color'].astype(str).unique().tolist()))
+        length = st.sidebar.selectbox("选择长度", [''] + sorted(df['Length'].astype(str).unique().tolist()))
 
-                return filtered_data
+        def filter_data(df, manufacture_number=None, cable_type=None, length=None, color=None):
+            filtered_data = df.copy()
+            if manufacture_number:
+                filtered_data = filtered_data[filtered_data['Manufacture_number'] ==manufacture_number]
+            if cable_type:
+                filtered_data = filtered_data[filtered_data['Type'] == cable_type]
+            if length:
+                filtered_data = filtered_data[filtered_data['Length'].astype(str) == length]
+            if color:
+                color = color.lower()  # Convert user input to lowercase
+                filtered_data = filtered_data[filtered_data['Color'].astype(str).str.lower() == color]
 
-            if st.sidebar.button("获取筛选数据结果"):
-                filtered_df = filter_data(df, manufacture_number, cable_type, length, color)
-                filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
-                filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
-                st.subheader(f"{cable_type}, {length}, {color} 筛选数据展示")
-                st.write(filtered_df)
-                if filtered_df.empty:
-                    st.info("No matching entries.")
+            return filtered_data
 
-        # Fourth Tab: Production Details
-        with st.tab(label="生产工时详情"):
-            # Results Section
-            # Convert "Total_time" and "Time_per_person" to numeric
-            df["Time_per_person"] = pd.to_numeric(df["Time_per_person"], errors="coerce")
-            df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
-            # Group by Type, Color, and Length
-            grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
-            # Store the results in a list of tables
-            tables = []
-            # Display the results
-            for name, group in grouped_df:
-                total_time_per_person = group["Time_per_person"].sum()
-                total_production_time=group["Total_time"].sum()
-                last_step = group.iloc[-1]["End_Steps"]
-                date=group.iloc[-1]["Date"]
-                # Add data to the table for rows with NaN Manufacture_number
-                result_table = {
-                "Date": date,
-                "Type": name[0],
-                "Color": name[1],
-                "Length": name[2],
-                "Order_number": name[3],
-                "Manufacture_number": name[4],
-                "Total_time_per_person": total_time_per_person,
-                "Total_production_time": total_production_time,
-                "Last_step": last_step
-                }
-                # Append the result table to the list
-                tables.append(result_table)
-            # Convert the list of tables to a DataFrame
-            result_df = pd.DataFrame(tables)
-            result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
-            result_df['Order_number'] = result_df['Order_number'].astype(int)
-            # Display the final DataFrame
-            st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
-            st.write(result_df)
-            # Add a filter button
-            if st.button("已装箱入库"):
-                # Filter and sort the DataFrame
-                filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-                # Display the filtered DataFrame
-                st.markdown("<h2 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
-                st.write(filtered_df)
-            # Add a filter button for 'Non storage' (does not contain 'storage')
-            if st.button("未装箱入库"):
-                # Filter and sort the DataFrame
-                non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-                # Display the filtered DataFrame
-                st.markdown("<h2 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
-                st.write(non_storage_df)
+        if st.sidebar.button("获取筛选数据结果"):
+            filtered_df = filter_data(df, manufacture_number, cable_type, length, color)
+            filtered_df['Date'] = filtered_df['Date'].dt.strftime('%Y-%m-%d')
+            filtered_df['Order_number'] = filtered_df['Order_number'].astype(int)
+            st.subheader(f"{cable_type}, {length}, {color} 筛选数据展示")
+            st.write(filtered_df)
+            if filtered_df.empty:
+                st.info("No matching entries.")
+
+    # Fourth Tab: Production Details
+    elif tab_selection == "生产工时详情":
+        # Results Section
+        # Convert "Total_time" and "Time_per_person" to numeric
+        df["Time_per_person"] = pd.to_numeric(df["Time_per_person"], errors="coerce")
+        df["Total_time"]=pd.to_numeric(df["Total_time"], errors="coerce")
+        # Group by Type, Color, and Length
+        grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
+        # Store the results in a list of tables
+        tables = []
+        # Display the results
+        for name, group in grouped_df:
+            total_time_per_person = group["Time_per_person"].sum()
+            total_production_time=group["Total_time"].sum()
+            last_step = group.iloc[-1]["End_Steps"]
+            date=group.iloc[-1]["Date"]
+            # Add data to the table for rows with NaN Manufacture_number
+            result_table = {
+            "Date": date,
+            "Type": name[0],
+            "Color": name[1],
+            "Length": name[2],
+            "Order_number": name[3],
+            "Manufacture_number": name[4],
+            "Total_time_per_person": total_time_per_person,
+            "Total_production_time": total_production_time,
+            "Last_step": last_step
+            }
+            # Append the result table to the list
+            tables.append(result_table)
+        # Convert the list of tables to a DataFrame
+        result_df = pd.DataFrame(tables)
+        result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
+        result_df['Order_number'] = result_df['Order_number'].astype(int)
+        # Display the final DataFrame
+        st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
+        st.write(result_df)
+        # Add a filter button
+        if st.button("已装箱入库"):
+            # Filter and sort the DataFrame
+            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            # Display the filtered DataFrame
+            st.markdown("<h2 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
+            st.write(filtered_df)
+        # Add a filter button for 'Non storage' (does not contain 'storage')
+        if st.button("未装箱入库"):
+            # Filter and sort the DataFrame
+            non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            # Display the filtered DataFrame
+            st.markdown("<h2 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
+            st.write(non_storage_df)
 
 else:
     st.error("Unable to load data from Google Drive.")

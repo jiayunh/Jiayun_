@@ -67,7 +67,7 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["入库详情","过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["入库详情","过去一周生产数据", "生产日期筛选","不良率详情"， "生产种类筛选","生产工时详情"])
 
     # Define result_df
     grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
@@ -78,12 +78,12 @@ if file_content:
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
         result_table = {
-        "Date": date,
-        "Manufacture_number": name[0],    
-        "Type": name[1],
-        "Color": name[2],
-        "Length": name[3],
-        "Order_number": name[4],
+        "Date": date,    
+        "Type": name[0],
+        "Color": name[1],
+        "Length": name[2],
+        "Order_number": name[3],
+        "Manufacture_number": name[4],
         "Total_time_per_person": total_time_per_person,
         "Total_production_time": total_production_time,
         "Last_step": last_step

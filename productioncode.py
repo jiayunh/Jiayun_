@@ -67,7 +67,7 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["未装箱入库","已装箱入库","过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
 
     # Define result_df
     grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])

@@ -67,10 +67,10 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["过去一周数据", "不良率详情", "数据筛选", "生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["过去一周生产数据", "不良率详情", "生产日期筛选", "生产种类筛选"，"生产工时详情"])
 
     # First Tab: Last 7 Days Data
-    if tab_selection == "过去一周数据":
+    if tab_selection == "过去一周生产数据":
         # Display data for the last 7 days
         st.markdown("<h1 style='text-align: center;'>过去一周的跳线生产表格</h1>", unsafe_allow_html=True)
         last_7_days_data = df[df['Date'] >= today_minus_7_days]
@@ -115,7 +115,7 @@ if file_content:
             st.success("No abnormal rows found in the dataset.")
 
     # Third Tab: Data Filtering
-    elif tab_selection == "数据筛选":
+    elif tab_selection == "生产日期筛选":
         #Filter Data 1
         st.sidebar.title("选取生产数据")
         # Add a selectbox for month and year filtering
@@ -131,7 +131,8 @@ if file_content:
             # Display the filtered DataFrame
             st.subheader("按日期过滤结果")
             st.write(filtered_by_date_df)
-
+            
+     elif tab_selection == "生产种类筛选":
         # Filter Data Section 2
         st.sidebar.title("选择跳线数据")
         manufacture_number= st.sidebar.selectbox("选择制令单号", [''] + sorted(df['Manufacture_number'].unique().tolist()))

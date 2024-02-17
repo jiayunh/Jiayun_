@@ -219,6 +219,7 @@ if file_content:
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
             st.write(non_storage_df)
     elif tab_selection == "生产工时详情":
+        st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
         st.write(result_df)
 
 else:

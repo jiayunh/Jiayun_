@@ -132,8 +132,7 @@ if file_content:
         for i, val in enumerate(chart_data):
            st.write(val)
            st.text(f"val: {val}")
-           chart.bar_chart.labels[i] = str(val)
-
+           chart.bar_chart.data.labels[i] = str(val)
 
 
     # Third Tab: Data Filtering

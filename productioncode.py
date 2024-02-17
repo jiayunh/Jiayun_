@@ -124,8 +124,8 @@ if file_content:
         st.subheader("月度不良率统计")
         for year in [2023, 2024]:
             st.subheader(f"{year} 年")
-            monthly_abnormal_table_year = pd.DataFrame([entry for entry in monthly_abnormal_counts if entry["Year"] == year])
-            st.bar_chart(monthly_abnormal_table_year.set_index('Month'))
+            monthly_abnormal_table_year = pd.DataFrame([entry["Total Abnormal"] for entry in monthly_abnormal_counts if entry["Year"] == year], columns=["Total Abnormal"])
+            st.bar_chart(monthly_abnormal_table_year, use_container_width=True)
 
 
 

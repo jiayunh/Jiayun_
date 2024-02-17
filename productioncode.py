@@ -67,7 +67,7 @@ if file_content:
     pd.set_option('display.max_colwidth', None)
 
     # Create tabs using st.radio()
-    tab_selection = st.radio("选择选项卡", ["未装箱入库","已装箱入库","过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
+    tab_selection = st.radio("选择选项卡", ["入库详情","过去一周生产数据","不良率详情", "生产日期筛选", "生产种类筛选","生产工时详情"])
 
     # Define result_df
     grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
@@ -188,26 +188,22 @@ if file_content:
                 st.info("No matching entries.")
 
     # Fourth Tab: Production Details
-    elif tab_selection == "生产工时详情":
-        # Display the final DataFrame
-        st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
-        st.write(result_df)
+    elif tab_selection == "入库详情":
+       # Create a dropdown menu for selecting "已入库" or "未入库"
+       selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
 
-    # Fifth Tab: Filtered by '已装箱入库'
-    elif tab_selection == "已装箱入库":
-        # Filter and sort the DataFrame for '已装箱入库'
-        filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-        # Display the filtered DataFrame
-        st.markdown("<h2 style='text-align: center;'>已装箱入库结果</h2>", unsafe_allow_html=True)
-        st.write(filtered_df)
+       # Filter and sort the DataFrame based on the selected option
+       if selected_option == "已入库":
+           filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+           # Display the filtered DataFrame for '已入库'
+           st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
+           st.write(filtered_df)
+       elif selected_option == "未入库":
+           non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+           # Display the filtered DataFrame for '未入库'
+           st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
+           st.write(non_storage_df)
 
-    # Sixth Tab: Filtered by '未装箱入库'
-    elif tab_selection == "未装箱入库":
-        # Filter and sort the DataFrame for '未装箱入库'
-        non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-        # Display the filtered DataFrame
-        st.markdown("<h2 style='text-align: center;'>非装箱入库结果</h2>", unsafe_allow_html=True)
-        st.write(non_storage_df)
 
 else:
     st.error("Unable to load data from Google Drive.")

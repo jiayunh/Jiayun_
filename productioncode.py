@@ -75,6 +75,7 @@ if file_content:
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
+        total_production_number=group["Production_number"].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
         result_table = {
@@ -84,7 +85,7 @@ if file_content:
             "Length": name[2],
             "Order_number": name[3],
             "Manufacture_number": name[4],
-            "Production_number": production_number,
+            "Production_number": total_production_number,
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step
@@ -210,29 +211,26 @@ if file_content:
 
     # Fourth Tab: Production Details
     elif tab_selection == "入库详情":
-        # Function to determine if an item is stored or not
-        def categorize_storage(row):
-            grouped = result_df.groupby(['Manufacture_number', 'Type', 'Color', 'Length'])
-            for name, group in grouped:
-                if all(group['Last_step'].str.lower() == 'storage') and (group['Production_number'].sum() == group['Order_number'].iloc[0]):
-                    result_df.loc[group.index, 'Storage_Status'] = '已入库'
-                else:
-                    result_df.loc[group.index, 'Storage_Status'] = '未入库'
-
-        # Apply the categorization function to the DataFrame
-        categorize_storage(result_df)
-
-        # Filtered DataFrame for items that are 已入库 or 未入库
+        # Create a dropdown menu for selecting "已入库" or "未入库"
         selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
+
+        # Filter and sort the DataFrame based on the selected option
         if selected_option == "已入库":
-            filtered_df = result_df[result_df['Storage_Status'] == '已入库'].sort_values(by='Date')
+            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False) &
+                        (result_df['Order_number'] == result_df['total_production_number'])].sort_values(by='Date')
+            # Display the filtered DataFrame for '已入库'
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)
         elif selected_option == "未入库":
-            filtered_df = result_df[result_df['Storage_Status'] == '未入库'].sort_values(by='Date')
+            non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            # Display the filtered DataFrame for '未入库'
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
-            st.write(filtered_df)
+            st.write(non_storage_df)
+    elif tab_selection == "生产工时详情":
+        st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
+        st.write(result_df)
 
+  
 else:
     st.error("Unable to load data from Google Drive.")
 

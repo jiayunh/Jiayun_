@@ -222,7 +222,7 @@ if file_content:
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)
         elif selected_option == "未入库":
-            non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            non_storage_df = result_df[result_df['Order_number'] > result_df['Total_production_number']]
             # Display the filtered DataFrame for '未入库'
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
             st.write(non_storage_df)

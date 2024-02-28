@@ -206,25 +206,31 @@ if file_content:
             if filtered_df.empty:
                 st.info("No matching entries.")
 
+
     # Fourth Tab: Production Details
     elif tab_selection == "入库详情":
-        # Create a dropdown menu for selecting "已入库" or "未入库"
-        selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
+        # Function to determine if an item is stored or not
+        def categorize_storage(row):
+            grouped = result_df.groupby(['Manufacture_number', 'Type', 'Color', 'Length'])
+            for name, group in grouped:
+                if all(group['Last_step'].str.lower() == 'storage') and (group['Production_number'].sum() == group['Order_number'].iloc[0]):
+                    result_df.loc[group.index, 'Storage_Status'] = '已入库'
+                else:
+                    result_df.loc[group.index, 'Storage_Status'] = '未入库'
 
-        # Filter and sort the DataFrame based on the selected option
+        # Apply the categorization function to the DataFrame
+        categorize_storage(result_df)
+
+        # Filtered DataFrame for items that are 已入库 or 未入库
+        selected_option = st.selectbox("选择入库详情", ["未入库", "已入库"])
         if selected_option == "已入库":
-            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-            # Display the filtered DataFrame for '已入库'
+            filtered_df = result_df[result_df['Storage_Status'] == '已入库'].sort_values(by='Date')
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)
         elif selected_option == "未入库":
-            non_storage_df = result_df[~result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
-            # Display the filtered DataFrame for '未入库'
+            filtered_df = result_df[result_df['Storage_Status'] == '未入库'].sort_values(by='Date')
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
-            st.write(non_storage_df)
-    elif tab_selection == "生产工时详情":
-        st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
-        st.write(result_df)
+            st.write(filtered_df)
 
 else:
     st.error("Unable to load data from Google Drive.")

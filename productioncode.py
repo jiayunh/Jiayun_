@@ -84,7 +84,7 @@ if file_content:
             "Length": name[2],
             "Order_number": name[3],
             "Manufacture_number": name[4],
-            "Production_number": name[5],
+            "Production_number": production_number,
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step

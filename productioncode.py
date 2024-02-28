@@ -85,7 +85,7 @@ if file_content:
             "Length": name[2],
             "Order_number": name[3],
             "Manufacture_number": name[4],
-            "Production_number": total_production_number,
+            "Total_production_number": total_production_number,
             "Total_time_per_person": total_time_per_person,
             "Total_production_time": total_production_time,
             "Last_step": last_step
@@ -217,7 +217,7 @@ if file_content:
         # Filter and sort the DataFrame based on the selected option
         if selected_option == "已入库":
             filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False) &
-                        (result_df['Order_number'] == result_df['total_production_number'])].sort_values(by='Date')
+                        (result_df['Order_number'] == result_df['Total_production_number'])].sort_values(by='Date')
             # Display the filtered DataFrame for '已入库'
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)

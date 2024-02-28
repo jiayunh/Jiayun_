@@ -75,7 +75,7 @@ if file_content:
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
-        total_production_number=group["Production_number"].sum()
+        total_production_number = group[group['Last_step'].str.contains('storage', case=False, na=False)]['Production_number'].sum()
         last_step = group.iloc[-1]["End_Steps"]
         date=group.iloc[-1]["Date"]
         result_table = {
@@ -216,7 +216,8 @@ if file_content:
 
         # Filter and sort the DataFrame based on the selected option
         if selected_option == "已入库":
-            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False)].sort_values(by='Date')
+            filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False) &
+                        (result_df['Order_number'] == result_df['total_production_number'])].sort_values(by='Date')
             # Display the filtered DataFrame for '已入库'
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)

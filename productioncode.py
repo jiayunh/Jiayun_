@@ -56,9 +56,6 @@ if file_content:
         unsafe_allow_html=True
     )
 
-    # Calculate the date seven days ago
-    today_minus_7_days = pd.to_datetime('today') - pd.DateOffset(days=7)
-
     # Assuming 'Date' is a column in your DataFrame
     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -114,7 +111,7 @@ if file_content:
        tables1.append(result_table1)  # Corrected variable name
     result_df1 = pd.DataFrame(tables1)
     result_df1['Date'] = pd.to_datetime(result_df1['Date']).dt.strftime('%Y-%m-%d')  # Convert to datetime and then format
-    result_df1_filtered = result_df1[result_df1['Date'] > '2023-12-08']  # Filter based on 'Date' column
+    result_df1_filtered = result_df1[result_df1['Date'] > '2024-02-02']  # Filter based on 'Date' column
 
 
     

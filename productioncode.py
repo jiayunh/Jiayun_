@@ -106,6 +106,7 @@ if file_content:
            "Color": name[2],
            "Length": name[3],
            "Order_number": name[4],
+            "Total_production_number": total_production_number,
            "Total_people": total_people,
            "Total_production_time": total_production_time,
            "Last_step": last_step

@@ -91,19 +91,21 @@ if file_content:
     result_df['Order_number'] = result_df['Order_number'].astype(int)
 
     # Define result_df 
-    grouped_df1 = df.groupby(["Manufacture_number","Type", "Color", "Length"])
+    grouped_df1 = df.groupby(["Manufacture_number","Type", "Color", "Length","Order_number"])
     tables1 = []
     for name, group in grouped_df1:
        total_production_time= group["Total_time"].sum()
        total_people=group["People"].sum()
        last_step = group.iloc[-1]["End_Steps"]
        date=group.iloc[-1]["Date"]
+       total_production_number = group[group['End_Steps'].str.contains('storage', case=False, na=False)]['Production_number'].sum()
        result_table1 = {
            "Date": date,    
            "Manufacture_number": name[0],
            "Type": name[1],
            "Color": name[2],
            "Length": name[3],
+           "Order_number": name[4],
            "Total_people": total_people,
            "Total_production_time": total_production_time,
            "Last_step": last_step
@@ -247,8 +249,10 @@ if file_content:
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
             st.write(non_storage_df)
     elif tab_selection == "生产工时详情":
+        result_df1_filtered1  = result_df1_filtered[result_df1_filtered['Last_step'].str.contains('storage', case=False, na=False) &
+                        (result_df1_filtered['Order_number'] == result_df1_filtered['Total_production_number'])].sort_values(by='Date')
         st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
-        st.write(result_df1_filtered )
+        st.write(result_df1_filtered1)
 
   
 else:

@@ -112,9 +112,9 @@ if file_content:
            "Last_step": last_step
        }
        tables1.append(result_table1)  # Corrected variable name
-   result_df1 = pd.DataFrame(tables1)
-   result_df1['Date'] = pd.to_datetime(result_df1['Date']).dt.strftime('%Y-%m-%d')  # Convert to datetime and then format
-   result_df1_filtered = result_df1[result_df1['Date'] > '2023-12-08']  # Filter based on 'Date' column
+    result_df1 = pd.DataFrame(tables1)
+    result_df1['Date'] = pd.to_datetime(result_df1['Date']).dt.strftime('%Y-%m-%d')  # Convert to datetime and then format
+    result_df1_filtered = result_df1[result_df1['Date'] > '2023-12-08']  # Filter based on 'Date' column
 
 
     

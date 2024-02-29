@@ -103,7 +103,7 @@ if file_content:
         date=group.iloc[-1]["Date"]
         result_table1 = {
             "Date": date,    
-            "Manufacture_number": name[0]
+            "Manufacture_number": name[0],
             "Type": name[1],
             "Color": name[2],
             "Length": name[3],

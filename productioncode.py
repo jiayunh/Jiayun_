@@ -69,8 +69,8 @@ if file_content:
     # Create tabs using st.radio()
     tab_selection = st.radio("选择选项卡", ["入库详情", "生产日期筛选","不良率详情","生产种类筛选","生产工时详情"])
 
-    # Define result_df
-    grouped_df = df.groupby(["Type", "Color", "Length", "Order_number","Manufacture_number"])
+    # Define result_df 
+    grouped_df = df.groupby(["Manufacture_number","Type", "Color", "Length", "Order_number"])
     tables = []
     for name, group in grouped_df:
         total_time_per_person = group["Time_per_person"].sum()
@@ -80,20 +80,41 @@ if file_content:
         date=group.iloc[-1]["Date"]
         result_table = {
             "Date": date,    
-            "Type": name[0],
-            "Color": name[1],
-            "Length": name[2],
-            "Order_number": name[3],
-            "Manufacture_number": name[4],
+            "Manufacture_number": name[0]
+            "Type": name[1],
+            "Color": name[2],
+            "Length": name[3],
+            "Order_number": name[4],
             "Total_production_number": total_production_number,
-            "Total_time_per_person": total_time_per_person,
-            "Total_production_time": total_production_time,
             "Last_step": last_step
         }
         tables.append(result_table)
     result_df = pd.DataFrame(tables)
     result_df['Date'] = result_df['Date'].dt.strftime('%Y-%m-%d')
     result_df['Order_number'] = result_df['Order_number'].astype(int)
+
+    # Define result_df 
+    grouped_df1 = df.groupby(["Manufacture_number","Type", "Color", "Length"])
+    tables1 = []
+    for name, group in grouped_df1:
+        total_production_time= group["Total_time"].sum()
+        total_people=group["People"].sum()
+        last_step = group.iloc[-1]["End_Steps"]
+        date=group.iloc[-1]["Date"]
+        result_table1 = {
+            "Date": date,    
+            "Manufacture_number": name[0]
+            "Type": name[1],
+            "Color": name[2],
+            "Length": name[3],
+            "Total_people": total_people,
+            "Total_production_time": total_production_time,
+            "Last_step": last_step
+        }
+        tables.append(result_table1)
+    result_df1 = pd.DataFrame(tables1)
+    result_df1['Date'] = result_df1['Date'].dt.strftime('%Y-%m-%d')
+    result_df1_filtered = result_df1[result_df1['date_column'] > pd.Timestamp('2023-12-08')]
 
     
     if tab_selection == "不良率详情":
@@ -229,7 +250,7 @@ if file_content:
             st.write(non_storage_df)
     elif tab_selection == "生产工时详情":
         st.markdown("<h1 style='text-align: center;'>生产工时详情</h1>", unsafe_allow_html=True)
-        st.write(result_df)
+        st.write(result_df1_filtered )
 
   
 else:

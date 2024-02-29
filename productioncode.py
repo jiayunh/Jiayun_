@@ -97,24 +97,25 @@ if file_content:
     grouped_df1 = df.groupby(["Manufacture_number","Type", "Color", "Length"])
     tables1 = []
     for name, group in grouped_df1:
-        total_production_time= group["Total_time"].sum()
-        total_people=group["People"].sum()
-        last_step = group.iloc[-1]["End_Steps"]
-        date=group.iloc[-1]["Date"]
-        result_table1 = {
-            "Date": date,    
-            "Manufacture_number": name[0],
-            "Type": name[1],
-            "Color": name[2],
-            "Length": name[3],
-            "Total_people": total_people,
-            "Total_production_time": total_production_time,
-            "Last_step": last_step
-        }
-        tables.append(result_table1)
-    result_df1 = pd.DataFrame(tables1)
-    result_df1['Date'] = result_df1['Date'].dt.strftime('%Y-%m-%d')
-    result_df1_filtered = result_df1[result_df1['date_column'] > pd.Timestamp('2023-12-08')]
+       total_production_time= group["Total_time"].sum()
+       total_people=group["People"].sum()
+       last_step = group.iloc[-1]["End_Steps"]
+       date=group.iloc[-1]["Date"]
+       result_table1 = {
+           "Date": date,    
+           "Manufacture_number": name[0],
+           "Type": name[1],
+           "Color": name[2],
+           "Length": name[3],
+           "Total_people": total_people,
+           "Total_production_time": total_production_time,
+           "Last_step": last_step
+       }
+       tables1.append(result_table1)  # Corrected variable name
+   result_df1 = pd.DataFrame(tables1)
+   result_df1['Date'] = pd.to_datetime(result_df1['Date']).dt.strftime('%Y-%m-%d')  # Convert to datetime and then format
+   result_df1_filtered = result_df1[result_df1['Date'] > '2023-12-08']  # Filter based on 'Date' column
+
 
     
     if tab_selection == "不良率详情":

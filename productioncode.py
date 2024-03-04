@@ -168,7 +168,7 @@ if file_content:
         st.subheader(f"{selected_year} 年 {selected_month} 月的详细不良率统计")
 
         # Define the threshold for abnormal rates
-        threshold = st.sidebar.slider("设置阈值:", 0.0, 0.1, 0.02, 0.01)
+        threshold = st.sidebar.slider("设置阈值:", 0.0, 0.5, 0.02, 0.01)
 
         # Display detailed abnormal rates categorized by ranges (0.01 intervals) larger than the threshold
         for i in range(int(threshold * 100), 10):

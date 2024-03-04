@@ -176,6 +176,7 @@ if file_content:
             upper_bound = (i + 1) / 100
             range_df = filtered_df[(filtered_df['Mistake_rates'] >= lower_bound) & (filtered_df['Mistake_rates'] < upper_bound)]
             if not range_df.empty:
+                range_df = range_df.drop(columns=['Unnamed: 14', 'Unnamed: 15'])
                 st.write(f"不良率范围: {lower_bound} - {upper_bound}")
                 st.write(range_df)
 

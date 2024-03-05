@@ -70,7 +70,6 @@ if file_content:
     grouped_df = df.groupby(["Manufacture_number","Type", "Color", "Length", "Order_number"])
     tables = []
     for name, group in grouped_df:
-        total_time_per_person = group["Time_per_person"].sum()
         total_production_time=group["Total_time"].sum()
         total_production_number = group[group['End_Steps'].str.contains('storage', case=False, na=False)]['Production_number'].sum()
         last_step = group.iloc[-1]["End_Steps"]

@@ -113,7 +113,7 @@ if file_content:
        tables1.append(result_table1)  # Corrected variable name
     result_df1 = pd.DataFrame(tables1)
     result_df1['Date'] = pd.to_datetime(result_df1['Date']).dt.strftime('%Y-%m-%d')  # Convert to datetime and then format
-    result_df1_filtered = result_df1[result_df1['Date'] > '2024-02-02']  # Filter based on 'Date' column
+    result_df1_filtered = result_df1[result_df1['Date'] > '2024-02-02']  
 
 
     
@@ -240,12 +240,14 @@ if file_content:
         if selected_option == "已入库":
             filtered_df = result_df[result_df['Last_step'].str.contains('storage', case=False, na=False) &
                         (result_df['Order_number'] == result_df['Total_production_number'])].sort_values(by='Date')
+            filtered_df = filtered_df[filtered_df['Date'] > '2024-02-02'] 
             # Display the filtered DataFrame for '已入库'
             st.markdown("<h2 style='text-align: center;'>已入库结果</h2>", unsafe_allow_html=True)
             st.write(filtered_df)
         elif selected_option == "未入库":
             non_storage_df = result_df[result_df['Order_number'] > result_df['Total_production_number']]
             non_storage_df = non_storage_df.sort_values(by='Date')
+            non_storage_df = non_storage_df[non_storage_df['Date'] > '2024-02-02'] 
             # Display the filtered DataFrame for '未入库'
             st.markdown("<h2 style='text-align: center;'>未入库结果</h2>", unsafe_allow_html=True)
             st.write(non_storage_df)
